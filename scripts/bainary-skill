@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 # bainary-skill CLI
 # Usage: bainary-skill <command>
+#
+# Install globally:       curl -sL https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.sh | bash
+# Install project-local:  curl -sL https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.sh | bash -s -- --local
 
 set -e
 
 BAINARY_DIR=".bainary"
 SKILL_REPO="https://github.com/BainaryTD/bainary-skill"
+RAW_REPO="https://raw.githubusercontent.com/BainaryTD/bainary-skill/main"
 
 BOLD="\033[1m"
 GREEN="\033[0;32m"
@@ -19,6 +23,13 @@ success() { echo -e "${GREEN}[bainary-skill]${NC} $1"; }
 warn()    { echo -e "${YELLOW}[bainary-skill]${NC} $1"; }
 error()   { echo -e "${RED}[bainary-skill]${NC} $1" >&2; exit 1; }
 
+# ── Detect if running as project-local ──────────────────────────────────────
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+IS_LOCAL=false
+if [[ "$SCRIPT_DIR" == "$(pwd)/bin" || "$SCRIPT_DIR" == "$(pwd)/scripts" ]]; then
+  IS_LOCAL=true
+fi
+
 cmd_learn() {
   info "Starting project discovery..."
 
@@ -28,7 +39,7 @@ cmd_learn() {
   for file in project-knowledge.md architecture.md patterns.md conventions.md; do
     if [ ! -f "$BAINARY_DIR/$file" ]; then
       info "Creating $BAINARY_DIR/$file from template..."
-      curl -sL "$SKILL_REPO/raw/main/templates/.bainary/$file" -o "$BAINARY_DIR/$file"
+      curl -sL "$RAW_REPO/templates/.bainary/$file" -o "$BAINARY_DIR/$file"
     else
       warn "$BAINARY_DIR/$file already exists, skipping"
     fi
@@ -36,11 +47,11 @@ cmd_learn() {
 
   # Copy CLI instruction files
   info "Installing CLI instruction files..."
-  curl -sL "$SKILL_REPO/raw/main/adapters/claude/CLAUDE.md"          -o CLAUDE.md
-  curl -sL "$SKILL_REPO/raw/main/adapters/codex/AGENTS.md"           -o AGENTS.md
-  curl -sL "$SKILL_REPO/raw/main/adapters/cursor/.cursorrules"        -o .cursorrules
-  curl -sL "$SKILL_REPO/raw/main/adapters/cursor/CURSOR.md"          -o CURSOR.md
-  curl -sL "$SKILL_REPO/raw/main/adapters/aider/CONVENTIONS.md"      -o CONVENTIONS.md
+  curl -sL "$RAW_REPO/adapters/claude/CLAUDE.md"        -o CLAUDE.md
+  curl -sL "$RAW_REPO/adapters/codex/AGENTS.md"         -o AGENTS.md
+  curl -sL "$RAW_REPO/adapters/cursor/.cursorrules"      -o .cursorrules
+  curl -sL "$RAW_REPO/adapters/cursor/CURSOR.md"        -o CURSOR.md
+  curl -sL "$RAW_REPO/adapters/aider/CONVENTIONS.md"    -o CONVENTIONS.md
 
   # Set last updated date
   DATE=$(date +"%Y-%m-%d %H:%M")
@@ -49,26 +60,28 @@ cmd_learn() {
   success "Done! Fill in .bainary/ files with your project context."
   echo ""
   echo "  Next steps:"
-  echo "    1. Edit .bainary/project-knowledge.md — describe your project"
-  echo "    2. Edit .bainary/architecture.md      — document key decisions"
-  echo "    3. Edit .bainary/conventions.md       — define naming rules"
-  echo "    4. Run: bainary-skill update          — refresh after changes"
+  echo "    1. Edit .bainary/project-knowledge.md  — describe your project"
+  echo "    2. Edit .bainary/architecture.md       — document key decisions"
+  echo "    3. Edit .bainary/conventions.md        — define naming rules"
+  if [ "$IS_LOCAL" = true ]; then
+    echo "    4. Run: ./bin/bainary-skill update     — refresh after changes"
+  else
+    echo "    4. Run: bainary-skill update           — refresh after changes"
+  fi
 }
 
 cmd_update() {
-  info "Updating project knowledge..."
+  info "Refreshing CLI instruction files from latest skill version..."
 
   if [ ! -d "$BAINARY_DIR" ]; then
-    error "No .bainary/ directory found. Run 'bainary-skill learn' first."
+    error "No .bainary/ directory found. Run '$(basename $0) learn' first."
   fi
 
-  # Update adapter files from latest skill version
-  info "Refreshing CLI instruction files from latest skill version..."
-  curl -sL "$SKILL_REPO/raw/main/adapters/claude/CLAUDE.md"     -o CLAUDE.md
-  curl -sL "$SKILL_REPO/raw/main/adapters/codex/AGENTS.md"      -o AGENTS.md
-  curl -sL "$SKILL_REPO/raw/main/adapters/cursor/.cursorrules"   -o .cursorrules
-  curl -sL "$SKILL_REPO/raw/main/adapters/cursor/CURSOR.md"     -o CURSOR.md
-  curl -sL "$SKILL_REPO/raw/main/adapters/aider/CONVENTIONS.md" -o CONVENTIONS.md
+  curl -sL "$RAW_REPO/adapters/claude/CLAUDE.md"        -o CLAUDE.md
+  curl -sL "$RAW_REPO/adapters/codex/AGENTS.md"         -o AGENTS.md
+  curl -sL "$RAW_REPO/adapters/cursor/.cursorrules"      -o .cursorrules
+  curl -sL "$RAW_REPO/adapters/cursor/CURSOR.md"        -o CURSOR.md
+  curl -sL "$RAW_REPO/adapters/aider/CONVENTIONS.md"    -o CONVENTIONS.md
 
   # Update timestamp in project-knowledge.md
   DATE=$(date +"%Y-%m-%d %H:%M")
@@ -79,10 +92,15 @@ cmd_update() {
 
 cmd_status() {
   info "bainary-skill status"
+  if [ "$IS_LOCAL" = true ]; then
+    echo -e "  ${YELLOW}(project-local install)${NC}"
+  else
+    echo -e "  ${GREEN}(global install)${NC}"
+  fi
   echo ""
 
   if [ ! -d "$BAINARY_DIR" ]; then
-    warn ".bainary/ not found — run 'bainary-skill learn' to initialize"
+    warn ".bainary/ not found — run '$(basename $0) learn' to initialize"
     exit 0
   fi
 
@@ -91,9 +109,9 @@ cmd_status() {
     if [ -f "$BAINARY_DIR/$file" ]; then
       LINES=$(wc -l < "$BAINARY_DIR/$file")
       MODIFIED=$(stat -c "%y" "$BAINARY_DIR/$file" 2>/dev/null | cut -d'.' -f1)
-      echo -e "  ${GREEN}✓${NC} $file ($LINES lines, modified: $MODIFIED)"
+      echo -e "  ${GREEN}✓${NC} $file  (${LINES} lines, modified: ${MODIFIED})"
     else
-      echo -e "  ${RED}✗${NC} $file (missing)"
+      echo -e "  ${RED}✗${NC} $file  ${RED}(missing)${NC}"
     fi
   done
 
@@ -103,29 +121,55 @@ cmd_status() {
     if [ -f "$file" ]; then
       echo -e "  ${GREEN}✓${NC} $file"
     else
-      echo -e "  ${YELLOW}–${NC} $file (not installed)"
+      echo -e "  ${YELLOW}–${NC} $file  (not installed)"
     fi
   done
 }
 
+cmd_install() {
+  # Self-install into project (called via npx or one-liner)
+  local mode="${1:-local}"
+
+  if [ "$mode" = "global" ]; then
+    info "Running global installer..."
+    curl -sL "$RAW_REPO/install.sh" | bash
+  else
+    info "Running project-local installer..."
+    curl -sL "$RAW_REPO/install.sh" | bash -s -- --local
+  fi
+}
+
 cmd_help() {
-  echo -e "${BOLD}bainary-skill${NC} — Web Development Base Skill"
+  echo -e "${BOLD}bainary-skill${NC} — Web Development Base Skill v0.2.0"
   echo ""
-  echo "Usage: bainary-skill <command>"
+  echo -e "Usage: ${BOLD}bainary-skill${NC} <command> [options]"
   echo ""
-  echo "Commands:"
-  echo "  learn     Initialize project knowledge and install CLI instruction files"
-  echo "  update    Refresh CLI files from latest skill version + update timestamp"
-  echo "  status    Show knowledge state and installed files"
-  echo "  help      Show this help message"
+  echo -e "${BOLD}Commands:${NC}"
+  echo "  learn              Initialize .bainary/ knowledge + install CLI instruction files"
+  echo "  update             Refresh CLI files from latest skill version"
+  echo "  status             Show knowledge state and installed files"
+  echo "  install [--global] Re-install this CLI (default: project-local)"
+  echo "  help               Show this help"
   echo ""
-  echo "Project: $SKILL_REPO"
+  echo -e "${BOLD}Installation:${NC}"
+  echo ""
+  echo "  # Global (available everywhere):"
+  echo "  curl -sL $RAW_REPO/install.sh | bash"
+  echo ""
+  echo "  # Project-local (./bin/bainary-skill):"
+  echo "  curl -sL $RAW_REPO/install.sh | bash -s -- --local"
+  echo ""
+  echo "  # Via npm/npx (no install needed):"
+  echo "  npx github:BainaryTD/bainary-skill learn"
+  echo ""
+  echo "  Project: $SKILL_REPO"
 }
 
 case "${1:-help}" in
-  learn)   cmd_learn   ;;
-  update)  cmd_update  ;;
-  status)  cmd_status  ;;
-  help|--help|-h) cmd_help ;;
-  *) error "Unknown command: $1. Run 'bainary-skill help' for usage." ;;
+  learn)            cmd_learn   ;;
+  update)           cmd_update  ;;
+  status)           cmd_status  ;;
+  install)          cmd_install "${2:-local}" ;;
+  help|--help|-h)   cmd_help    ;;
+  *) error "Unknown command: $1. Run '$(basename $0) help' for usage." ;;
 esac
