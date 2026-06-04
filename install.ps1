@@ -1,10 +1,12 @@
 # bainary-skill installer for Windows (PowerShell)
 # No WSL or bash required.
 #
-# Usage:
+# Usage (PowerShell):
 #   Global:        irm https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.ps1 | iex
-#   Project-local: irm https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.ps1 -OutFile install.ps1; .\install.ps1 --local
-#   Or with args:  & ([scriptblock]::Create((irm https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.ps1))) --local
+#   Project-local: irm https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.ps1 -OutFile install.ps1; .\install.ps1 -Local
+#
+# Usage (CMD.exe):
+#   powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.ps1 -OutFile install.ps1; powershell -ExecutionPolicy Bypass -File install.ps1 -Local"
 
 param(
     [switch]$Local,
@@ -35,12 +37,23 @@ if ($isLocal) {
     New-Item -ItemType Directory -Force -Path $TargetDir | Out-Null
     Invoke-RestMethod -Uri $SCRIPT_URL -OutFile $Target
 
+    # Create a .cmd shim so `bin\bainary-skill.cmd` works from CMD.exe too
+    $shimPath = "$TargetDir\bainary-skill.cmd"
+    @"
+@echo off
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0bainary-skill.ps1" %*
+"@ | Set-Content $shimPath
+
     # Add to .gitignore
     if (Test-Path ".gitignore") {
         $ignore = Get-Content ".gitignore" -Raw
         if ($ignore -notmatch [regex]::Escape("/bin/$SCRIPT_NAME")) {
             Add-Content ".gitignore" "`n/bin/$SCRIPT_NAME"
             Write-Info "Added /bin/$SCRIPT_NAME to .gitignore"
+        }
+        if ($ignore -notmatch [regex]::Escape("/bin/bainary-skill.cmd")) {
+            Add-Content ".gitignore" "/bin/bainary-skill.cmd"
+            Write-Info "Added /bin/bainary-skill.cmd to .gitignore"
         }
     }
 
@@ -50,7 +63,7 @@ if ($isLocal) {
             $pkg = Get-Content "package.json" -Raw | ConvertFrom-Json
             if (-not $pkg.scripts) { $pkg | Add-Member -NotePropertyName scripts -NotePropertyValue @{} }
             if (-not $pkg.scripts.bainary) {
-                $pkg.scripts | Add-Member -NotePropertyName bainary -NotePropertyValue "powershell -File .\bin\bainary-skill.ps1"
+                $pkg.scripts | Add-Member -NotePropertyName bainary -NotePropertyValue ".\bin\bainary-skill.cmd"
                 $pkg | ConvertTo-Json -Depth 10 | Set-Content "package.json"
                 Write-Info 'Added "bainary" script to package.json'
             }
@@ -59,9 +72,12 @@ if ($isLocal) {
 
     Write-Success "Installed locally! Usage:"
     Write-Host ""
+    Write-Host "  .\bin\bainary-skill.cmd learn"
+    Write-Host "  .\bin\bainary-skill.cmd update"
+    Write-Host "  .\bin\bainary-skill.cmd status"
+    Write-Host ""
+    Write-Host "  Or directly via PowerShell:"
     Write-Host "  powershell -File .\bin\bainary-skill.ps1 learn"
-    Write-Host "  powershell -File .\bin\bainary-skill.ps1 update"
-    Write-Host "  powershell -File .\bin\bainary-skill.ps1 status"
     Write-Host ""
     Write-Host "  Or via npm (if package.json was updated):"
     Write-Host "  npm run bainary -- learn"
@@ -88,7 +104,7 @@ if ($isLocal) {
     $shimPath = "$GlobalBin\bainary-skill.cmd"
     @"
 @echo off
-powershell -ExecutionPolicy Bypass -File "%USERPROFILE%\bin\bainary-skill.ps1" %*
+powershell -NoProfile -ExecutionPolicy Bypass -File "%USERPROFILE%\bin\bainary-skill.ps1" %*
 "@ | Set-Content $shimPath
 
     Write-Success "Installed globally! Usage:"

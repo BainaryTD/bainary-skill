@@ -28,7 +28,26 @@
 
 ## Installation
 
-### 🪟 Windows (PowerShell) — ไม่ต้องใช้ WSL หรือ bash
+### 🪟 Windows — ไม่ต้องใช้ WSL หรือ bash
+
+#### CMD.exe
+
+**Project-local install** (เฉพาะ project นั้น):
+
+```cmd
+cd your-project
+powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.cmd -OutFile install.cmd; .\install.cmd --local"
+```
+
+ใช้งาน:
+
+```cmd
+.\bin\bainary-skill.cmd learn
+.\bin\bainary-skill.cmd update
+.\bin\bainary-skill.cmd status
+```
+
+#### PowerShell
 
 **Global install** (ใช้ได้ทุก project):
 
@@ -41,7 +60,7 @@ irm https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.ps1 |
 ```powershell
 cd your-project
 irm https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.ps1 -OutFile install.ps1
-.\install.ps1 --local
+.\install.ps1 -Local
 ```
 
 ใช้งาน (หลัง global install):
@@ -55,7 +74,7 @@ bainary-skill status
 ใช้งาน (project-local):
 
 ```powershell
-powershell -File .\bin\bainary-skill.ps1 learn
+.\bin\bainary-skill.cmd learn
 # หรือถ้ามี package.json:
 npm run bainary -- learn
 ```
@@ -115,14 +134,20 @@ npx github:BainaryTD/bainary-skill learn
 
 ### 1. ติดตั้ง
 
-**Windows:**
+**Windows CMD.exe:**
+```cmd
+# Project-local
+powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.cmd -OutFile install.cmd; .\install.cmd --local"
+```
+
+**Windows PowerShell:**
 ```powershell
 # Global
 irm https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.ps1 | iex
 
 # หรือ project-local
 irm https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.ps1 -OutFile install.ps1
-.\install.ps1 --local
+.\install.ps1 -Local
 ```
 
 **macOS / Linux:**
@@ -212,6 +237,7 @@ bainary-skill/
 ├── package.json                    # npm/npx support
 ├── install.sh                      # Installer (macOS/Linux/WSL)
 ├── install.ps1                     # Installer (Windows PowerShell)
+├── install.cmd                     # Installer wrapper (Windows CMD.exe)
 │
 ├── scripts/
 │   ├── bainary-skill               # CLI script (bash)
