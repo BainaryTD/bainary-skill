@@ -1,0 +1,131 @@
+#!/usr/bin/env bash
+# bainary-skill CLI
+# Usage: bainary-skill <command>
+
+set -e
+
+BAINARY_DIR=".bainary"
+SKILL_REPO="https://github.com/BainaryTD/bainary-skill"
+
+BOLD="\033[1m"
+GREEN="\033[0;32m"
+YELLOW="\033[0;33m"
+BLUE="\033[0;34m"
+RED="\033[0;31m"
+NC="\033[0m"
+
+info()    { echo -e "${BLUE}[bainary-skill]${NC} $1"; }
+success() { echo -e "${GREEN}[bainary-skill]${NC} $1"; }
+warn()    { echo -e "${YELLOW}[bainary-skill]${NC} $1"; }
+error()   { echo -e "${RED}[bainary-skill]${NC} $1" >&2; exit 1; }
+
+cmd_learn() {
+  info "Starting project discovery..."
+
+  mkdir -p "$BAINARY_DIR"
+
+  # Download .bainary templates if not present
+  for file in project-knowledge.md architecture.md patterns.md conventions.md; do
+    if [ ! -f "$BAINARY_DIR/$file" ]; then
+      info "Creating $BAINARY_DIR/$file from template..."
+      curl -sL "$SKILL_REPO/raw/main/templates/.bainary/$file" -o "$BAINARY_DIR/$file"
+    else
+      warn "$BAINARY_DIR/$file already exists, skipping"
+    fi
+  done
+
+  # Copy CLI instruction files
+  info "Installing CLI instruction files..."
+  curl -sL "$SKILL_REPO/raw/main/adapters/claude/CLAUDE.md"          -o CLAUDE.md
+  curl -sL "$SKILL_REPO/raw/main/adapters/codex/AGENTS.md"           -o AGENTS.md
+  curl -sL "$SKILL_REPO/raw/main/adapters/cursor/.cursorrules"        -o .cursorrules
+  curl -sL "$SKILL_REPO/raw/main/adapters/cursor/CURSOR.md"          -o CURSOR.md
+  curl -sL "$SKILL_REPO/raw/main/adapters/aider/CONVENTIONS.md"      -o CONVENTIONS.md
+
+  # Set last updated date
+  DATE=$(date +"%Y-%m-%d %H:%M")
+  sed -i "s/<!-- DATE -->/$DATE/" "$BAINARY_DIR/project-knowledge.md"
+
+  success "Done! Fill in .bainary/ files with your project context."
+  echo ""
+  echo "  Next steps:"
+  echo "    1. Edit .bainary/project-knowledge.md — describe your project"
+  echo "    2. Edit .bainary/architecture.md      — document key decisions"
+  echo "    3. Edit .bainary/conventions.md       — define naming rules"
+  echo "    4. Run: bainary-skill update          — refresh after changes"
+}
+
+cmd_update() {
+  info "Updating project knowledge..."
+
+  if [ ! -d "$BAINARY_DIR" ]; then
+    error "No .bainary/ directory found. Run 'bainary-skill learn' first."
+  fi
+
+  # Update adapter files from latest skill version
+  info "Refreshing CLI instruction files from latest skill version..."
+  curl -sL "$SKILL_REPO/raw/main/adapters/claude/CLAUDE.md"     -o CLAUDE.md
+  curl -sL "$SKILL_REPO/raw/main/adapters/codex/AGENTS.md"      -o AGENTS.md
+  curl -sL "$SKILL_REPO/raw/main/adapters/cursor/.cursorrules"   -o .cursorrules
+  curl -sL "$SKILL_REPO/raw/main/adapters/cursor/CURSOR.md"     -o CURSOR.md
+  curl -sL "$SKILL_REPO/raw/main/adapters/aider/CONVENTIONS.md" -o CONVENTIONS.md
+
+  # Update timestamp in project-knowledge.md
+  DATE=$(date +"%Y-%m-%d %H:%M")
+  sed -i "s/Last updated: .*/Last updated: $DATE/" "$BAINARY_DIR/project-knowledge.md"
+
+  success "Updated! Remember to manually update .bainary/ if architecture changed."
+}
+
+cmd_status() {
+  info "bainary-skill status"
+  echo ""
+
+  if [ ! -d "$BAINARY_DIR" ]; then
+    warn ".bainary/ not found — run 'bainary-skill learn' to initialize"
+    exit 0
+  fi
+
+  echo -e "${BOLD}Knowledge files:${NC}"
+  for file in project-knowledge.md architecture.md patterns.md conventions.md; do
+    if [ -f "$BAINARY_DIR/$file" ]; then
+      LINES=$(wc -l < "$BAINARY_DIR/$file")
+      MODIFIED=$(stat -c "%y" "$BAINARY_DIR/$file" 2>/dev/null | cut -d'.' -f1)
+      echo -e "  ${GREEN}✓${NC} $file ($LINES lines, modified: $MODIFIED)"
+    else
+      echo -e "  ${RED}✗${NC} $file (missing)"
+    fi
+  done
+
+  echo ""
+  echo -e "${BOLD}CLI instruction files:${NC}"
+  for file in CLAUDE.md AGENTS.md .cursorrules CURSOR.md CONVENTIONS.md; do
+    if [ -f "$file" ]; then
+      echo -e "  ${GREEN}✓${NC} $file"
+    else
+      echo -e "  ${YELLOW}–${NC} $file (not installed)"
+    fi
+  done
+}
+
+cmd_help() {
+  echo -e "${BOLD}bainary-skill${NC} — Web Development Base Skill"
+  echo ""
+  echo "Usage: bainary-skill <command>"
+  echo ""
+  echo "Commands:"
+  echo "  learn     Initialize project knowledge and install CLI instruction files"
+  echo "  update    Refresh CLI files from latest skill version + update timestamp"
+  echo "  status    Show knowledge state and installed files"
+  echo "  help      Show this help message"
+  echo ""
+  echo "Project: $SKILL_REPO"
+}
+
+case "${1:-help}" in
+  learn)   cmd_learn   ;;
+  update)  cmd_update  ;;
+  status)  cmd_status  ;;
+  help|--help|-h) cmd_help ;;
+  *) error "Unknown command: $1. Run 'bainary-skill help' for usage." ;;
+esac
