@@ -1,7 +1,7 @@
 ---
 name: bainary-skill
 description: Web development base skill with project learning, continuous knowledge update, and multi-CLI support (Codex, Grok, Claude Code, Cursor, Aider).
-version: 0.1.0
+version: 0.2.0
 author: Bainary
 license: MIT
 metadata:
@@ -51,60 +51,77 @@ Web Development Base Skill with Project Learning & Multi-CLI Support
 
 ```
 .bainary/
-├── project-knowledge.md      # Main knowledge file
+├── project-knowledge.md      # Main knowledge file (start here)
 ├── architecture.md           # High-level architecture decisions
 ├── patterns.md               # Recurring patterns discovered
 └── conventions.md            # Naming, folder structure, styling rules
 ```
+
+Templates for all four files are in `templates/.bainary/`.
 
 ### Learning Commands
 
 | Command | Description |
 |---------|-------------|
 | `bainary-skill learn` | Perform initial project discovery and create knowledge base |
-| `bainary-skill update` | Update knowledge from recent code changes |
-| `bainary-skill status` | Show current knowledge state and last updated time |
+| `bainary-skill update` | Update CLI instruction files from latest skill version |
+| `bainary-skill status` | Show current knowledge state and installed files |
+
+### Installing the CLI
+
+```bash
+curl -sL https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/scripts/bainary-skill \
+  -o /usr/local/bin/bainary-skill && chmod +x /usr/local/bin/bainary-skill
+```
 
 ## Multi-CLI Support
 
 The skill exports compatible instruction files for different AI CLIs:
 
-| CLI | File | How it works |
-|-----|------|--------------|
-| Claude Code | `CLAUDE.md` | Copied/symlinked into project root |
-| Cursor | `.cursorrules` + `CURSOR.md` | Cursor reads these automatically |
-| Codex | `AGENTS.md` | Codex respects this file |
-| Grok | `AGENTS.md` | Grok CLI can be pointed to this file |
-| Aider | `CONVENTIONS.md` | Aider loads project conventions |
+| CLI | File | Adapter |
+|-----|------|---------|
+| Claude Code | `CLAUDE.md` | `adapters/claude/` |
+| Cursor | `.cursorrules` + `CURSOR.md` | `adapters/cursor/` |
+| Codex | `AGENTS.md` | `adapters/codex/` |
+| Grok | `AGENTS.md` | `adapters/grok/` |
+| Aider | `CONVENTIONS.md` | `adapters/aider/` |
 
 ## Usage Workflow
 
-### 1. Initialize New Web Project
+### 1. Install CLI
 
 ```bash
-bainary-skill web:init my-app
-cd my-app
+curl -sL https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/scripts/bainary-skill \
+  -o /usr/local/bin/bainary-skill && chmod +x /usr/local/bin/bainary-skill
+```
+
+### 2. Initialize New Web Project
+
+```bash
 bainary-skill learn
+# Fill in .bainary/ files with your project context
 ```
 
-### 2. Daily Development
+### 3. Daily Development
 
 ```bash
-bainary-skill update                    # Refresh project knowledge
-bainary-skill web:component Button      # Create component respecting project style
-bainary-skill web:feature auth          # Create feature module
-bainary-skill web:review                # Review changes against principles
+bainary-skill status          # Check what's installed
+bainary-skill update          # Refresh CLI files from latest skill
 ```
 
-### 3. Working with Different CLIs
+### 4. Working with Different CLIs
 
-After running `bainary-skill learn`, the project will contain the appropriate instruction files for your preferred CLI.
+After running `bainary-skill learn`, your project will contain:
+- `CLAUDE.md` — for Claude Code
+- `AGENTS.md` — for Codex & Grok
+- `.cursorrules` + `CURSOR.md` — for Cursor
+- `CONVENTIONS.md` — for Aider
 
 ## Common Pitfalls
 
-- Running generation commands without first running `bainary-skill learn` or `update`
-- Ignoring the generated `.bainary/` knowledge when the project evolves significantly
-- Mixing multiple conflicting patterns from different CLIs without curation
+- Running without `bainary-skill learn` first → no `.bainary/` context
+- Not updating `.bainary/` after major refactors → stale AI context
+- Committing `.env` files → use `.gitignore` from `templates/web-project/`
 
 ## Verification Checklist
 
