@@ -28,6 +28,42 @@
 
 ## Installation
 
+### 🪟 Windows (PowerShell) — ไม่ต้องใช้ WSL หรือ bash
+
+**Global install** (ใช้ได้ทุก project):
+
+```powershell
+irm https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.ps1 | iex
+```
+
+**Project-local install** (เฉพาะ project นั้น):
+
+```powershell
+cd your-project
+irm https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.ps1 -OutFile install.ps1
+.\install.ps1 --local
+```
+
+ใช้งาน (หลัง global install):
+
+```powershell
+bainary-skill learn
+bainary-skill update
+bainary-skill status
+```
+
+ใช้งาน (project-local):
+
+```powershell
+powershell -File .\bin\bainary-skill.ps1 learn
+# หรือถ้ามี package.json:
+npm run bainary -- learn
+```
+
+---
+
+### 🐧 macOS / Linux (bash)
+
 ### 🌍 Global Install (แนะนำสำหรับใช้ข้าม project)
 
 ```bash
@@ -79,6 +115,17 @@ npx github:BainaryTD/bainary-skill learn
 
 ### 1. ติดตั้ง
 
+**Windows:**
+```powershell
+# Global
+irm https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.ps1 | iex
+
+# หรือ project-local
+irm https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.ps1 -OutFile install.ps1
+.\install.ps1 --local
+```
+
+**macOS / Linux:**
 ```bash
 # Global
 curl -sL https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.sh | bash
@@ -163,10 +210,12 @@ bainary-skill/
 ├── README.md                       # This file
 ├── CHANGELOG.md                    # Version history
 ├── package.json                    # npm/npx support
-├── install.sh                      # Installer script
+├── install.sh                      # Installer (macOS/Linux/WSL)
+├── install.ps1                     # Installer (Windows PowerShell)
 │
 ├── scripts/
-│   └── bainary-skill               # CLI script (learn/update/status/install)
+│   ├── bainary-skill               # CLI script (bash)
+│   └── bainary-skill.ps1           # CLI script (PowerShell / Windows)
 │
 ├── adapters/                       # Per-CLI instruction files
 │   ├── claude/CLAUDE.md
