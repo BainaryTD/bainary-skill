@@ -5,70 +5,131 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-0.2.0-blue.svg)](CHANGELOG.md)
 
-## What is this?
+---
 
-`bainary-skill` is a foundational skill for web development that:
-- **Learns your project** before generating code
-- **Maintains knowledge** across multiple sessions
-- **Works with every AI CLI** — Claude Code, Cursor, Codex, Grok, Aider
+## What is bainary-skill?
 
-Built on Karpathy's core principles: **Think Before Coding**, **Simplicity First**, **Surgical Changes**, **Goal-Driven Execution**.
+`bainary-skill` เป็น foundational skill สำหรับ web development ที่:
+
+- 🧠 **เรียนรู้ project ของคุณ** ก่อน generate code ทุกครั้ง
+- 🔄 **รักษา knowledge** ข้ามหลาย session
+- 🤖 **รองรับทุก AI CLI** — Claude Code, Cursor, Codex, Grok, Aider
+
+สร้างบน Karpathy's core principles:
+
+| Principle | ความหมาย |
+|-----------|----------|
+| **Think Before Coding** | วิเคราะห์และวางแผนก่อนเขียนโค้ด |
+| **Simplicity First** | เลือก solution ที่ง่ายและ maintain ได้ |
+| **Surgical Changes** | แก้แค่ที่จำเป็น ไม่แตะโค้ดที่ไม่เกี่ยว |
+| **Goal-Driven Execution** | ทุก change ต้องมี verifiable goal |
+
+---
+
+## Installation
+
+### 🌍 Global Install (แนะนำสำหรับใช้ข้าม project)
+
+```bash
+curl -sL https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.sh | bash
+```
+
+ใช้ได้ทุกที่ในเครื่อง:
+
+```bash
+bainary-skill learn
+bainary-skill update
+bainary-skill status
+```
+
+---
+
+### 📁 Project-Local Install (เฉพาะ project นั้น)
+
+```bash
+cd your-project
+curl -sL https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.sh | bash -s -- --local
+```
+
+ติดตั้งที่ `./bin/bainary-skill` และ auto-add npm script (ถ้ามี `package.json`):
+
+```bash
+./bin/bainary-skill learn
+
+# หรือถ้ามี package.json:
+npm run bainary -- learn
+```
+
+> **ทำไมต้อง project-local?**
+> - ไม่ต้องติดตั้ง global บนทุกเครื่อง
+> - แต่ละ project ใช้ version ที่ตัวเองต้องการได้
+> - ทำงานได้ใน CI/CD โดยไม่ต้อง pre-install
+
+---
+
+### ⚡ npx (ไม่ต้อง install เลย)
+
+```bash
+npx github:BainaryTD/bainary-skill learn
+```
+
+---
 
 ## Quick Start
 
-### 1. Install the CLI
+### 1. ติดตั้ง
 
 ```bash
-curl -sL https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/scripts/bainary-skill \
-  -o /usr/local/bin/bainary-skill && chmod +x /usr/local/bin/bainary-skill
+# Global
+curl -sL https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.sh | bash
+
+# หรือ project-local
+curl -sL https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.sh | bash -s -- --local
 ```
 
-### 2. Initialize your project
+### 2. Initialize project
 
 ```bash
 cd your-web-project
-bainary-skill learn
+bainary-skill learn        # หรือ ./bin/bainary-skill learn (project-local)
 ```
 
-### 3. Fill in the knowledge files
+### 3. กรอก knowledge files
 
 ```
 .bainary/
-├── project-knowledge.md   ← describe your project
+├── project-knowledge.md   ← อธิบาย project ของคุณ
 ├── architecture.md        ← key design decisions
-├── patterns.md            ← code patterns in use
-└── conventions.md         ← naming & structure rules
+├── patterns.md            ← code patterns ที่ใช้
+└── conventions.md         ← naming & folder rules
 ```
 
-### 4. Start coding with any AI CLI
+### 4. เปิด AI CLI แล้วเริ่มโค้ดได้เลย
 
 ```bash
-# Claude Code
-claude
-
-# Codex
-codex
-
-# Cursor
-cursor .
-
-# Aider
-aider
+claude        # Claude Code
+codex         # Codex
+cursor .      # Cursor IDE
+aider         # Aider
 ```
 
-All of them will automatically load the correct instruction files.
+---
 
 ## CLI Commands
 
 | Command | Description |
 |---------|-------------|
-| `bainary-skill learn` | Initialize `.bainary/` + install CLI instruction files |
-| `bainary-skill update` | Refresh CLI files from latest skill version |
-| `bainary-skill status` | Show knowledge state and installed files |
+| `bainary-skill learn` | สร้าง `.bainary/` + ติดตั้ง CLI instruction files |
+| `bainary-skill update` | Refresh CLI files จาก latest skill version |
+| `bainary-skill status` | แสดงสถานะ knowledge files และ CLI files |
+| `bainary-skill install` | ติดตั้งใหม่ (project-local) |
+| `bainary-skill install --global` | ติดตั้งใหม่แบบ global |
+
+---
 
 ## Supported AI CLIs
 
-| CLI | File installed | Status |
+| CLI | File ที่ติดตั้ง | Status |
 |-----|---------------|--------|
 | Claude Code | `CLAUDE.md` | ✅ |
 | Cursor | `.cursorrules` + `CURSOR.md` | ✅ |
@@ -76,34 +137,59 @@ All of them will automatically load the correct instruction files.
 | Grok | `AGENTS.md` | ✅ |
 | Aider | `CONVENTIONS.md` | ✅ |
 
+---
+
+## Project Knowledge System
+
+หลังจาก `bainary-skill learn` project จะมี `.bainary/` directory:
+
+```
+.bainary/
+├── project-knowledge.md   # Overview, tech stack, entry points
+├── architecture.md        # Architecture decisions + data flow
+├── patterns.md            # Code patterns (fetching, state, forms ฯลฯ)
+└── conventions.md         # Naming, folder structure, commit style
+```
+
+AI CLI ทุกตัวจะอ่านไฟล์เหล่านี้ก่อนเขียนโค้ด — ทำให้ AI เข้าใจ project context ของคุณ
+
+---
+
 ## Repository Structure
 
 ```
 bainary-skill/
-├── SKILL.md                    # Hermes skill definition
-├── README.md                   # This file
-├── CHANGELOG.md                # Version history
+├── SKILL.md                        # Hermes skill definition
+├── README.md                       # This file
+├── CHANGELOG.md                    # Version history
+├── package.json                    # npm/npx support
+├── install.sh                      # Installer script
+│
 ├── scripts/
-│   └── bainary-skill           # CLI script
-├── adapters/
-│   ├── claude/CLAUDE.md        # Claude Code instructions
-│   ├── cursor/.cursorrules     # Cursor rules
-│   ├── cursor/CURSOR.md        # Cursor instructions
-│   ├── codex/AGENTS.md         # Codex instructions
-│   ├── grok/AGENTS.md          # Grok instructions
-│   ├── aider/CONVENTIONS.md    # Aider conventions
-│   └── web-project/            # web-project adapter docs
+│   └── bainary-skill               # CLI script (learn/update/status/install)
+│
+├── adapters/                       # Per-CLI instruction files
+│   ├── claude/CLAUDE.md
+│   ├── cursor/.cursorrules
+│   ├── cursor/CURSOR.md
+│   ├── codex/AGENTS.md
+│   ├── grok/AGENTS.md
+│   ├── aider/CONVENTIONS.md
+│   └── web-project/README.md
+│
 └── templates/
-    ├── .bainary/               # Project knowledge templates
+    ├── .bainary/                   # Project knowledge templates
     │   ├── project-knowledge.md
     │   ├── architecture.md
     │   ├── patterns.md
     │   └── conventions.md
-    └── web-project/            # Web project starter files
+    └── web-project/               # Web project starter files
         ├── package.json
         └── .gitignore
 ```
 
+---
+
 ## License
 
-MIT — see [LICENSE](LICENSE) or [SKILL.md](SKILL.md)
+MIT © [Bainary](https://github.com/BainaryTD)
