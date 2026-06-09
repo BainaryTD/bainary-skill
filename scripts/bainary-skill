@@ -36,7 +36,7 @@ cmd_learn() {
   mkdir -p "$BAINARY_DIR"
 
   # Download .bainary templates if not present
-  for file in project-knowledge.md architecture.md patterns.md conventions.md; do
+  for file in project-knowledge.md architecture.md patterns.md conventions.md session-handoff.md; do
     if [ ! -f "$BAINARY_DIR/$file" ]; then
       info "Creating $BAINARY_DIR/$file from template..."
       curl -sL "$RAW_REPO/templates/.bainary/$file" -o "$BAINARY_DIR/$file"
@@ -55,18 +55,24 @@ cmd_learn() {
 
   # Set last updated date
   DATE=$(date +"%Y-%m-%d %H:%M")
-  sed -i "s/<!-- DATE -->/$DATE/" "$BAINARY_DIR/project-knowledge.md"
+  for file in project-knowledge.md session-handoff.md; do
+    if [ -f "$BAINARY_DIR/$file" ]; then
+      sed -i "s/<!-- DATE -->/$DATE/" "$BAINARY_DIR/$file"
+    fi
+  done
 
   success "Done! Fill in .bainary/ files with your project context."
   echo ""
   echo "  Next steps:"
-  echo "    1. Edit .bainary/project-knowledge.md  — describe your project"
-  echo "    2. Edit .bainary/architecture.md       — document key decisions"
-  echo "    3. Edit .bainary/conventions.md        — define naming rules"
+  echo "    1. Ask your AI to read .bainary/ and inspect source code for project style"
+  echo "    2. Edit .bainary/project-knowledge.md  — describe your project"
+  echo "    3. Edit .bainary/architecture.md       — document key decisions"
+  echo "    4. Edit .bainary/conventions.md        — define naming rules"
+  echo "    5. Before ending each AI chat, update .bainary/session-handoff.md"
   if [ "$IS_LOCAL" = true ]; then
-    echo "    4. Run: ./bin/bainary-skill update     — refresh after changes"
+    echo "    6. Run: ./bin/bainary-skill update     — refresh after changes"
   else
-    echo "    4. Run: bainary-skill update           — refresh after changes"
+    echo "    6. Run: bainary-skill update           — refresh after changes"
   fi
 }
 
@@ -77,15 +83,26 @@ cmd_update() {
     error "No .bainary/ directory found. Run '$(basename $0) learn' first."
   fi
 
+  for file in project-knowledge.md architecture.md patterns.md conventions.md session-handoff.md; do
+    if [ ! -f "$BAINARY_DIR/$file" ]; then
+      info "Creating missing $BAINARY_DIR/$file from template..."
+      curl -sL "$RAW_REPO/templates/.bainary/$file" -o "$BAINARY_DIR/$file"
+    fi
+  done
+
   curl -sL "$RAW_REPO/adapters/claude/CLAUDE.md"        -o CLAUDE.md
   curl -sL "$RAW_REPO/adapters/codex/AGENTS.md"         -o AGENTS.md
   curl -sL "$RAW_REPO/adapters/cursor/.cursorrules"      -o .cursorrules
   curl -sL "$RAW_REPO/adapters/cursor/CURSOR.md"        -o CURSOR.md
   curl -sL "$RAW_REPO/adapters/aider/CONVENTIONS.md"    -o CONVENTIONS.md
 
-  # Update timestamp in project-knowledge.md
+  # Update timestamps
   DATE=$(date +"%Y-%m-%d %H:%M")
-  sed -i "s/Last updated: .*/Last updated: $DATE/" "$BAINARY_DIR/project-knowledge.md"
+  for file in project-knowledge.md session-handoff.md; do
+    if [ -f "$BAINARY_DIR/$file" ]; then
+      sed -i "s/Last updated: .*/Last updated: $DATE/; s/<!-- DATE -->/$DATE/" "$BAINARY_DIR/$file"
+    fi
+  done
 
   success "Updated! Remember to manually update .bainary/ if architecture changed."
 }
@@ -105,7 +122,7 @@ cmd_status() {
   fi
 
   echo -e "${BOLD}Knowledge files:${NC}"
-  for file in project-knowledge.md architecture.md patterns.md conventions.md; do
+  for file in project-knowledge.md architecture.md patterns.md conventions.md session-handoff.md; do
     if [ -f "$BAINARY_DIR/$file" ]; then
       LINES=$(wc -l < "$BAINARY_DIR/$file")
       MODIFIED=$(stat -c "%y" "$BAINARY_DIR/$file" 2>/dev/null | cut -d'.' -f1)
@@ -140,7 +157,7 @@ cmd_install() {
 }
 
 cmd_help() {
-  echo -e "${BOLD}bainary-skill${NC} — Web Development Base Skill v0.2.0"
+  echo -e "${BOLD}bainary-skill${NC} — Web Development Base Skill v0.2.1"
   echo ""
   echo -e "Usage: ${BOLD}bainary-skill${NC} <command> [options]"
   echo ""

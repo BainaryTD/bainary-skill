@@ -3,7 +3,7 @@
 > Web Development Base Skill with Project Learning & Multi-CLI Support
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.2.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.2.1-blue.svg)](CHANGELOG.md)
 
 ---
 
@@ -12,7 +12,9 @@
 `bainary-skill` เป็น foundational skill สำหรับ web development ที่:
 
 - 🧠 **เรียนรู้ project ของคุณ** ก่อน generate code ทุกครั้ง
+- 🎨 **จับ project style/code patterns** จาก codebase จริงในแชทแรก
 - 🔄 **รักษา knowledge** ข้ามหลาย session
+- 🧾 **บันทึก session handoff** หลังคุยกับ AI เสร็จ เพื่อเปิดแชทใหม่แล้วต่อเนื่อง
 - 🤖 **รองรับทุก AI CLI** — Claude Code, Cursor, Codex, Grok, Aider
 
 สร้างบน Karpathy's core principles:
@@ -166,14 +168,35 @@ cd your-web-project
 bainary-skill learn        # หรือ ./bin/bainary-skill learn (project-local)
 ```
 
-### 3. กรอก knowledge files
+### 3. กรอก knowledge files / ให้ AI เรียนรู้ project style
 
 ```
 .bainary/
 ├── project-knowledge.md   ← อธิบาย project ของคุณ
+├── session-handoff.md     ← สรุปแชทล่าสุด + next steps เพื่อเปิดแชทใหม่ต่อเนื่อง
 ├── architecture.md        ← key design decisions
 ├── patterns.md            ← code patterns ที่ใช้
 └── conventions.md         ← naming & folder rules
+```
+
+ในแชทแรกของ AI ให้ใช้ prompt นี้ก่อนสั่งเขียนโค้ด:
+
+```text
+Read .bainary/project-knowledge.md, .bainary/session-handoff.md,
+.bainary/architecture.md, .bainary/patterns.md, and .bainary/conventions.md.
+Then inspect the existing source code to learn this project's coding style,
+folder structure, naming conventions, component/API patterns, testing style,
+and dependencies. Update .bainary/patterns.md, .bainary/conventions.md,
+and .bainary/project-knowledge.md with missing findings before coding.
+```
+
+ก่อนจบแชทกับ AI ให้ใช้ prompt นี้:
+
+```text
+Before finishing, update .bainary/session-handoff.md with the current focus,
+what changed, decisions made, files touched, risks, and next steps. Move any
+stable new style/convention/pattern knowledge into .bainary/patterns.md,
+.bainary/conventions.md, or .bainary/architecture.md so the next AI chat can continue.
 ```
 
 ### 4. เปิด AI CLI แล้วเริ่มโค้ดได้เลย
@@ -191,7 +214,7 @@ aider         # Aider
 
 | Command | Description |
 |---------|-------------|
-| `bainary-skill learn` | สร้าง `.bainary/` + ติดตั้ง CLI instruction files |
+| `bainary-skill learn` | สร้าง `.bainary/` + `session-handoff.md` + ติดตั้ง CLI instruction files |
 | `bainary-skill update` | Refresh CLI files จาก latest skill version |
 | `bainary-skill status` | แสดงสถานะ knowledge files และ CLI files |
 | `bainary-skill install` | ติดตั้งใหม่ (project-local) |
@@ -218,12 +241,20 @@ aider         # Aider
 ```
 .bainary/
 ├── project-knowledge.md   # Overview, tech stack, entry points
+├── session-handoff.md     # Last chat summary, decisions, risks, next steps
 ├── architecture.md        # Architecture decisions + data flow
 ├── patterns.md            # Code patterns (fetching, state, forms ฯลฯ)
 └── conventions.md         # Naming, folder structure, commit style
 ```
 
 AI CLI ทุกตัวจะอ่านไฟล์เหล่านี้ก่อนเขียนโค้ด — ทำให้ AI เข้าใจ project context ของคุณ
+
+### Continuity Loop
+
+1. **เริ่มโปรเจกต์ / เปิดแชทใหม่:** ให้ AI อ่าน `.bainary/` ทั้งหมดก่อน
+2. **ถ้า style ยังว่าง:** ให้ AI inspect codebase แล้วเติม `patterns.md` + `conventions.md`
+3. **ระหว่างทำงาน:** ถ้ามี decision หรือ pattern ใหม่ ให้บันทึกใน `.bainary/`
+4. **ก่อนจบแชท:** ให้ AI update `session-handoff.md` เพื่อให้แชทถัดไปต่อได้ทันที
 
 ---
 
@@ -255,6 +286,7 @@ bainary-skill/
 └── templates/
     ├── .bainary/                   # Project knowledge templates
     │   ├── project-knowledge.md
+    │   ├── session-handoff.md
     │   ├── architecture.md
     │   ├── patterns.md
     │   └── conventions.md

@@ -44,3 +44,29 @@
 ## Notes for AI Assistants
 
 <!-- Any special instructions, gotchas, or conventions specific to this project -->
+
+## AI Learning Workflow
+
+### First command / first chat in this project
+
+When opening a new AI chat, ask the assistant to do this before coding:
+
+```text
+Read .bainary/project-knowledge.md, .bainary/session-handoff.md,
+.bainary/architecture.md, .bainary/patterns.md, and .bainary/conventions.md.
+Then inspect the existing source code to learn the project's style, folder structure,
+naming rules, component patterns, API patterns, testing style, and dependency choices.
+Update .bainary/patterns.md, .bainary/conventions.md, and .bainary/project-knowledge.md
+with anything missing before making code changes.
+```
+
+### End of every AI chat
+
+Before closing the chat, ask the assistant to update project memory:
+
+```text
+Before finishing, update .bainary/session-handoff.md with the current focus,
+what changed, decisions made, files touched, risks, and next steps. Also move any
+stable new style/convention/pattern knowledge into .bainary/patterns.md,
+.bainary/conventions.md, or .bainary/architecture.md so the next AI chat can continue.
+```

@@ -12,9 +12,18 @@ This project uses **bainary-skill** principles. Read this file before making any
 ## Before You Code
 
 1. Read `.bainary/project-knowledge.md` — understand the project context
-2. Read `.bainary/architecture.md` — understand system design decisions
-3. Read `.bainary/patterns.md` — follow existing patterns, don't invent new ones
-4. Read `.bainary/conventions.md` — follow naming, folder, and styling rules
+2. Read `.bainary/session-handoff.md` — continue from the last AI chat/task
+3. Read `.bainary/architecture.md` — understand system design decisions
+4. Read `.bainary/patterns.md` — follow existing patterns, don't invent new ones
+5. Read `.bainary/conventions.md` — follow naming, folder, and styling rules
+6. If patterns/conventions are generic or incomplete, inspect existing source code first and update `.bainary/` with the project's real style before coding
+
+## Session Continuity
+
+At the end of every chat/task:
+- Update `.bainary/session-handoff.md` with current focus, summary, decisions, files touched, risks, and next steps
+- Move stable new project knowledge into `.bainary/patterns.md`, `.bainary/conventions.md`, or `.bainary/architecture.md`
+- Keep `.bainary/project-knowledge.md` current when tech stack, entry points, or status changes
 
 ## When Writing Code
 

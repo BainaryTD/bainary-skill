@@ -1,7 +1,7 @@
 ---
 name: bainary-skill
 description: Web development base skill with project learning, continuous knowledge update, and multi-CLI support (Codex, Grok, Claude Code, Cursor, Aider).
-version: 0.2.0
+version: 0.2.1
 author: Bainary
 license: MIT
 metadata:
@@ -52,12 +52,20 @@ Web Development Base Skill with Project Learning & Multi-CLI Support
 ```
 .bainary/
 ├── project-knowledge.md      # Main knowledge file (start here)
+├── session-handoff.md        # Latest AI chat summary, decisions, risks, next steps
 ├── architecture.md           # High-level architecture decisions
 ├── patterns.md               # Recurring patterns discovered
 └── conventions.md            # Naming, folder structure, styling rules
 ```
 
-Templates for all four files are in `templates/.bainary/`.
+Templates for these files are in `templates/.bainary/`.
+
+### Continuity Loop
+
+1. Start each new AI chat by reading all `.bainary/` files.
+2. If `patterns.md` or `conventions.md` is generic, inspect source code first and update them with the project's real style/code patterns.
+3. During work, record stable decisions and patterns in the appropriate `.bainary/` file.
+4. Before ending a chat, update `session-handoff.md` so the next chat can continue.
 
 ### Learning Commands
 
@@ -99,7 +107,8 @@ curl -sL https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/scripts/
 
 ```bash
 bainary-skill learn
-# Fill in .bainary/ files with your project context
+# Ask AI to read .bainary/, inspect the codebase style, and update patterns/conventions
+# Before ending each chat, update .bainary/session-handoff.md
 ```
 
 ### 3. Daily Development
@@ -120,12 +129,16 @@ After running `bainary-skill learn`, your project will contain:
 ## Common Pitfalls
 
 - Running without `bainary-skill learn` first → no `.bainary/` context
+- Starting a new chat without reading `session-handoff.md` → lost continuity
+- Leaving `patterns.md` / `conventions.md` as generic templates → AI won't match project style
 - Not updating `.bainary/` after major refactors → stale AI context
 - Committing `.env` files → use `.gitignore` from `templates/web-project/`
 
 ## Verification Checklist
 
 - [ ] `.bainary/project-knowledge.md` exists and is up to date
+- [ ] `.bainary/session-handoff.md` captures the latest chat/task state
+- [ ] `.bainary/patterns.md` and `.bainary/conventions.md` reflect the real codebase style
 - [ ] Generated code follows the four core principles
 - [ ] Changes are surgical and respect existing patterns
 - [ ] Appropriate CLI instruction file is present in project root

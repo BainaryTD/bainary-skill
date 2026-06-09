@@ -13,9 +13,16 @@ This project uses **bainary-skill** principles.
 
 Before any task, load:
 - `.bainary/project-knowledge.md` — What this project is and how it works
+- `.bainary/session-handoff.md` — Latest AI chat summary, decisions, and next steps
 - `.bainary/architecture.md` — Key architectural decisions (do not contradict these)
 - `.bainary/patterns.md` — Patterns already in use (prefer these over introducing new ones)
 - `.bainary/conventions.md` — Naming, folder structure, and styling rules
+
+If `.bainary/patterns.md` or `.bainary/conventions.md` is still generic, inspect the existing source code first and update them with the project's real style/code patterns before coding.
+
+## Session Continuity
+
+Before finishing a chat/task, update `.bainary/session-handoff.md` with current focus, summary, decisions, files touched, risks, and next steps. Move stable new learnings into `.bainary/patterns.md`, `.bainary/conventions.md`, or `.bainary/architecture.md` so the next chat continues with context.
 
 ## Constraints
 

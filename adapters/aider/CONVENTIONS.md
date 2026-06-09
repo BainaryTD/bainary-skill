@@ -6,9 +6,12 @@ This project follows **bainary-skill** web development principles.
 
 Read project context in `.bainary/`:
 - `project-knowledge.md` — project overview
+- `session-handoff.md` — latest AI chat summary and next steps
 - `architecture.md` — architecture decisions
 - `patterns.md` — code patterns in use
 - `conventions.md` — naming and structure rules
+
+If `patterns.md` or `conventions.md` is still generic, inspect the existing source code first and update them with the project's real style/code patterns before coding.
 
 ## Core Principles
 
@@ -34,6 +37,10 @@ fix: resolve mobile nav overlap
 refactor: simplify data fetching in Dashboard
 docs: update .bainary/patterns.md
 ```
+
+## End of Chat
+
+Before finishing, update `.bainary/session-handoff.md` with the current focus, summary, decisions, files touched, risks, and next steps. Move stable new knowledge into `.bainary/patterns.md`, `.bainary/conventions.md`, or `.bainary/architecture.md` so the next chat can continue.
 
 ## What Aider Should Not Do
 

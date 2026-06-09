@@ -28,7 +28,7 @@ function cmd_learn {
     Write-Info "Starting project discovery..."
     New-Item -ItemType Directory -Force -Path $BAINARY_DIR | Out-Null
 
-    foreach ($file in @("project-knowledge.md","architecture.md","patterns.md","conventions.md")) {
+    foreach ($file in @("project-knowledge.md","architecture.md","patterns.md","conventions.md","session-handoff.md")) {
         $dest = "$BAINARY_DIR\$file"
         if (-not (Test-Path $dest)) {
             Write-Info "Creating $dest from template..."
@@ -47,19 +47,26 @@ function cmd_learn {
 
     # Set last updated date
     $date = Get-Date -Format "yyyy-MM-dd HH:mm"
-    (Get-Content "$BAINARY_DIR\project-knowledge.md") -replace "<!-- DATE -->", $date |
-        Set-Content "$BAINARY_DIR\project-knowledge.md"
+    foreach ($file in @("project-knowledge.md","session-handoff.md")) {
+        $path = "$BAINARY_DIR\$file"
+        if (Test-Path $path) {
+            (Get-Content $path) -replace "<!-- DATE -->", $date |
+                Set-Content $path
+        }
+    }
 
     Write-Success "Done! Fill in .bainary\ files with your project context."
     Write-Host ""
     Write-Host "  Next steps:"
-    Write-Host "    1. Edit .bainary\project-knowledge.md  — describe your project"
-    Write-Host "    2. Edit .bainary\architecture.md       — document key decisions"
-    Write-Host "    3. Edit .bainary\conventions.md        — define naming rules"
+    Write-Host "    1. Ask your AI to read .bainary\ and inspect source code for project style"
+    Write-Host "    2. Edit .bainary\project-knowledge.md  — describe your project"
+    Write-Host "    3. Edit .bainary\architecture.md       — document key decisions"
+    Write-Host "    4. Edit .bainary\conventions.md        — define naming rules"
+    Write-Host "    5. Before ending each AI chat, update .bainary\session-handoff.md"
     if ($IsLocal) {
-        Write-Host "    4. Run: powershell -File .\bin\bainary-skill.ps1 update"
+        Write-Host "    6. Run: powershell -File .\bin\bainary-skill.ps1 update"
     } else {
-        Write-Host "    4. Run: bainary-skill update"
+        Write-Host "    6. Run: bainary-skill update"
     }
 }
 
@@ -67,6 +74,14 @@ function cmd_update {
     Write-Info "Refreshing CLI instruction files from latest skill version..."
     if (-not (Test-Path $BAINARY_DIR)) {
         Write-Err "No .bainary\ directory found. Run 'bainary-skill learn' first."
+    }
+
+    foreach ($file in @("project-knowledge.md","architecture.md","patterns.md","conventions.md","session-handoff.md")) {
+        $dest = "$BAINARY_DIR\$file"
+        if (-not (Test-Path $dest)) {
+            Write-Info "Creating missing $dest from template..."
+            Fetch "$RAW_REPO/templates/.bainary/$file" $dest
+        }
     }
 
     Fetch "$RAW_REPO/adapters/claude/CLAUDE.md"     "CLAUDE.md"
@@ -77,8 +92,13 @@ function cmd_update {
 
     # Update timestamp
     $date = Get-Date -Format "yyyy-MM-dd HH:mm"
-    (Get-Content "$BAINARY_DIR\project-knowledge.md") -replace "Last updated: .*", "Last updated: $date" |
-        Set-Content "$BAINARY_DIR\project-knowledge.md"
+    foreach ($file in @("project-knowledge.md","session-handoff.md")) {
+        $path = "$BAINARY_DIR\$file"
+        if (Test-Path $path) {
+            (Get-Content $path) -replace "Last updated: .*", "Last updated: $date" -replace "<!-- DATE -->", $date |
+                Set-Content $path
+        }
+    }
 
     Write-Success "Updated! Remember to manually update .bainary\ if architecture changed."
 }
@@ -98,7 +118,7 @@ function cmd_status {
     }
 
     Write-Host "Knowledge files:" -ForegroundColor White
-    foreach ($file in @("project-knowledge.md","architecture.md","patterns.md","conventions.md")) {
+    foreach ($file in @("project-knowledge.md","architecture.md","patterns.md","conventions.md","session-handoff.md")) {
         $path = "$BAINARY_DIR\$file"
         if (Test-Path $path) {
             $lines    = (Get-Content $path).Count
@@ -132,7 +152,7 @@ function cmd_install {
 }
 
 function cmd_help {
-    Write-Host "bainary-skill — Web Development Base Skill v0.2.0" -ForegroundColor White
+    Write-Host "bainary-skill — Web Development Base Skill v0.2.1" -ForegroundColor White
     Write-Host ""
     Write-Host "Usage: bainary-skill <command> [options]"
     Write-Host ""
