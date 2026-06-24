@@ -1,19 +1,15 @@
 # Session Handoff
 
-> Maintained at the end of each AI chat/task so the next chat can continue without losing context.
+> Maintained automatically at the end of each meaningful AI chat/task so the next chat can continue without losing context.
 > Last updated: <!-- DATE -->
 
 ## Current Focus
 
-<!-- What are we working on right now? Include the feature/bug/refactor goal. -->
+<!-- What are we working on right now? Include the feature/bug/refactor/design goal. -->
 
-## Last Session Summary
+## What Changed This Session
 
-<!-- Summarize what changed, what was decided, and what still needs attention. -->
-
-## Open Tasks / Next Steps
-
-- <!-- Next concrete step -->
+<!-- Summarize concrete changes made in this chat/task. Include added/changed/removed behavior, docs, tests, configs, or architecture. -->
 
 ## Decisions Made During Chat
 
@@ -23,7 +19,7 @@
 
 ## Newly Learned Project Style / Patterns
 
-<!-- Add code style, folder, naming, API, component, or testing patterns discovered during the chat. Move stable items into patterns.md or conventions.md too. -->
+<!-- Add code style, folder, naming, API, component, testing, state-management, or workflow patterns discovered during the chat. Move stable reusable items into patterns.md, conventions.md, or architecture.md too. -->
 
 ## Files Touched Recently
 
@@ -31,6 +27,17 @@
 |------|-----------------|
 | <!-- path --> | <!-- purpose --> |
 
+## Open Tasks / Next Steps
+
+- <!-- Next concrete step -->
+
 ## Risks / Things To Verify
 
 - <!-- Tests to run, assumptions to check, edge cases -->
+
+## Do Not Record
+
+- Secrets, tokens, API keys, or `.env` values
+- Raw command output unless it is a durable project fact
+- Temporary failed attempts that were already fixed
+- Unrelated personal chat or non-project discussion

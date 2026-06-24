@@ -20,9 +20,13 @@ Before any task, load:
 
 If `.bainary/patterns.md` or `.bainary/conventions.md` is still generic, inspect the existing source code first and update them with the project's real style/code patterns before coding.
 
-## Session Continuity
+## Automatic Project Learning
 
-Before finishing a chat/task, update `.bainary/session-handoff.md` with current focus, summary, decisions, files touched, risks, and next steps. Move stable new learnings into `.bainary/patterns.md`, `.bainary/conventions.md`, or `.bainary/architecture.md` so the next chat continues with context.
+Before finishing any meaningful chat/task, automatically update `.bainary/session-handoff.md` with current focus, what changed this session, decisions made, files touched and why, newly discovered project patterns, risks, and next steps. Do not wait for the user to ask.
+
+Move stable reusable learnings into `.bainary/patterns.md`, `.bainary/conventions.md`, `.bainary/architecture.md`, or `.bainary/project-knowledge.md` so the next chat continues with context. Briefly mention in the final response that project handoff/knowledge was updated.
+
+Do not record temporary noise, fixed failed attempts, raw command output, unrelated chat, secrets, tokens, or `.env` values.
 
 ## Constraints
 

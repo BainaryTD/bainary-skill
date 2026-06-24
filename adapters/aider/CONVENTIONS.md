@@ -38,9 +38,11 @@ refactor: simplify data fetching in Dashboard
 docs: update .bainary/patterns.md
 ```
 
-## End of Chat
+## Automatic Project Learning
 
-Before finishing, update `.bainary/session-handoff.md` with the current focus, summary, decisions, files touched, risks, and next steps. Move stable new knowledge into `.bainary/patterns.md`, `.bainary/conventions.md`, or `.bainary/architecture.md` so the next chat can continue.
+Before finishing any meaningful task, automatically update `.bainary/session-handoff.md` with the current focus, what changed this session, decisions made, files touched and why, newly discovered project patterns, risks, and next steps. Do not wait for the user to ask.
+
+Move stable reusable knowledge into `.bainary/patterns.md`, `.bainary/conventions.md`, `.bainary/architecture.md`, or `.bainary/project-knowledge.md` so the next chat can continue. Do not record temporary noise, raw command output, fixed failed attempts, unrelated chat, secrets, tokens, or `.env` values.
 
 ## What Aider Should Not Do
 

@@ -67,6 +67,23 @@ Templates for these files are in `templates/.bainary/`.
 3. During work, record stable decisions and patterns in the appropriate `.bainary/` file.
 4. Before ending a chat, update `session-handoff.md` so the next chat can continue.
 
+### Automatic Project Learning
+
+AI assistants using this skill must learn project changes proactively. Do not wait for the user to say "learn this" or "update handoff".
+
+Before giving a final response for any meaningful coding, debugging, design, refactor, or documentation task:
+
+1. Check whether `.bainary/session-handoff.md` exists.
+2. If it exists, update it automatically with what changed in this session, files touched, decisions made, newly discovered project patterns, open tasks, next steps, and risks to verify.
+3. If a newly discovered pattern is stable and likely reusable, also update the right durable knowledge file:
+   - `.bainary/patterns.md` for code/component/API/testing patterns
+   - `.bainary/conventions.md` for naming, folder, formatting, or workflow conventions
+   - `.bainary/architecture.md` for architecture and data-flow decisions
+   - `.bainary/project-knowledge.md` for tech stack, entry points, or project status
+4. Mention briefly in the final response that the project handoff/knowledge was updated.
+
+Do **not** record temporary noise: failed attempts already fixed, raw command output, transient errors, unrelated chat, secrets, tokens, or `.env` values.
+
 ### Learning Commands
 
 | Command | Description |
@@ -145,6 +162,7 @@ After running `bainary-skill learn`, your project will contain:
 
 ## References
 
+- See `references/review-notes.md` for local audit findings and recommended hardening steps for installers, adapters, and Hermes usage.
 - https://github.com/mattpocock/skills
 - https://github.com/thananon/9arm-skills
 - https://github.com/multica-ai/andrej-karpathy-skills

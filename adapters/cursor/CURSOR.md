@@ -27,8 +27,12 @@ After opening this project in Cursor:
 3. If style knowledge is missing, inspect source code and update .bainary/patterns.md + .bainary/conventions.md
 4. Plan changes respecting existing patterns
 5. Implement with minimum necessary footprint
-6. Before ending the chat, update .bainary/session-handoff.md and any changed .bainary/ knowledge files
+6. Before the final response, automatically update .bainary/session-handoff.md and any stable .bainary/ knowledge files. Do not wait for the user to ask.
 ```
+
+## Automatic Project Learning
+
+At the end of every meaningful task, update `.bainary/session-handoff.md` with what changed, decisions made, files touched and why, newly discovered project patterns, risks, and next steps. Move stable reusable knowledge into `.bainary/patterns.md`, `.bainary/conventions.md`, `.bainary/architecture.md`, or `.bainary/project-knowledge.md`. Do not record temporary noise, raw command output, fixed failed attempts, unrelated chat, secrets, tokens, or `.env` values.
 
 ## Principles
 

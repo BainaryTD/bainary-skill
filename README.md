@@ -256,6 +256,16 @@ AI CLI ทุกตัวจะอ่านไฟล์เหล่านี้�
 3. **ระหว่างทำงาน:** ถ้ามี decision หรือ pattern ใหม่ ให้บันทึกใน `.bainary/`
 4. **ก่อนจบแชท:** ให้ AI update `session-handoff.md` เพื่อให้แชทถัดไปต่อได้ทันที
 
+### Automatic Project Learning
+
+AI CLI ที่ใช้ instruction ของ `bainary-skill` จะถูกกำหนดให้ update project handoff เองหลังจบงานที่มีสาระสำคัญ โดยไม่ต้องรอให้ user พิมพ์เตือนว่า "เรียนรู้สิ่งนี้" หรือ "update handoff"
+
+ก่อน final response ของงาน coding/debugging/design/refactor/documentation ให้ AI:
+
+- update `.bainary/session-handoff.md` ด้วยสิ่งที่เปลี่ยนใน session นี้, decisions, files touched, patterns ที่เรียนรู้, risks, และ next steps
+- ย้ายความรู้ที่ stable/reusable ไปยัง `.bainary/patterns.md`, `.bainary/conventions.md`, `.bainary/architecture.md`, หรือ `.bainary/project-knowledge.md`
+- ไม่บันทึก noise ชั่วคราว เช่น raw command output, failed attempts ที่แก้แล้ว, unrelated chat, secrets, tokens, หรือ `.env` values
+
 ---
 
 ## Repository Structure

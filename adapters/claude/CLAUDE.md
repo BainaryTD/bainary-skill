@@ -18,12 +18,18 @@ This project uses **bainary-skill** principles. Read this file before making any
 5. Read `.bainary/conventions.md` — follow naming, folder, and styling rules
 6. If patterns/conventions are generic or incomplete, inspect existing source code first and update `.bainary/` with the project's real style before coding
 
-## Session Continuity
+## Automatic Project Learning
 
-At the end of every chat/task:
-- Update `.bainary/session-handoff.md` with current focus, summary, decisions, files touched, risks, and next steps
-- Move stable new project knowledge into `.bainary/patterns.md`, `.bainary/conventions.md`, or `.bainary/architecture.md`
+At the end of every meaningful chat/task, before the final response, learn what changed automatically. Do not wait for the user to ask.
+
+If `.bainary/session-handoff.md` exists:
+- Update it with current focus, what changed this session, decisions made, files touched and why, risks, and next steps
+- Record newly discovered project style, component/API/testing patterns, naming rules, or workflow conventions
+- Move stable reusable knowledge into `.bainary/patterns.md`, `.bainary/conventions.md`, or `.bainary/architecture.md`
 - Keep `.bainary/project-knowledge.md` current when tech stack, entry points, or status changes
+- Briefly mention in the final response that project handoff/knowledge was updated
+
+Do not record temporary noise, fixed failed attempts, raw command output, unrelated chat, secrets, tokens, or `.env` values.
 
 ## When Writing Code
 

@@ -12,6 +12,8 @@ All notable changes to `bainary-skill` are documented here.
 ### Improved
 - `learn`, `update`, and `status` now include `session-handoff.md` in project knowledge management.
 - Adapter instructions for Claude, Codex, Cursor, Grok, and Aider now include session continuity rules.
+- Adapter instructions now require Automatic Project Learning: AI assistants update `.bainary/session-handoff.md` and stable `.bainary/` knowledge automatically before final responses, without waiting for the user to ask.
+- `session-handoff.md` template now separates “What Changed This Session” from durable decisions/patterns and explicitly excludes secrets, raw command noise, and unrelated chat.
 
 ## [0.2.0] — 2025-06
 

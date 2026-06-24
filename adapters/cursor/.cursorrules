@@ -25,9 +25,11 @@ If .bainary/patterns.md or .bainary/conventions.md is still generic, inspect the
 - Prefer editing existing files over creating new ones
 - Write self-documenting code; avoid obvious comments
 
-## End of Chat
-- Update .bainary/session-handoff.md with current focus, summary, decisions, files touched, risks, and next steps
-- Move stable new learnings into .bainary/patterns.md, .bainary/conventions.md, or .bainary/architecture.md
+## Automatic Project Learning
+- Before the final response for every meaningful task, automatically update .bainary/session-handoff.md with what changed, decisions made, files touched and why, newly discovered project patterns, risks, and next steps
+- Move stable reusable learnings into .bainary/patterns.md, .bainary/conventions.md, .bainary/architecture.md, or .bainary/project-knowledge.md
+- Do not wait for the user to ask for handoff/learning updates
+- Do not record temporary noise, raw command output, fixed failed attempts, unrelated chat, secrets, tokens, or .env values
 
 ## What NOT To Do
 - Do not refactor unrelated code

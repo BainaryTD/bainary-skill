@@ -21,12 +21,14 @@ Always load project context before generating code:
 .bainary/conventions.md         ← naming & structure rules
 ```
 
-## Session Continuity
+## Automatic Project Learning
 
 - At the start of a new chat, read all `.bainary/` files before coding.
 - If `.bainary/patterns.md` or `.bainary/conventions.md` is still generic, inspect the existing source code first and update them with the project's real style/code patterns.
-- At the end of every task/chat, update `.bainary/session-handoff.md` with current focus, decisions, files touched, risks, and next steps.
-- Move stable new learnings into `.bainary/patterns.md`, `.bainary/conventions.md`, or `.bainary/architecture.md` so the next chat continues with context.
+- At the end of every meaningful task/chat, before the final response, automatically update `.bainary/session-handoff.md` with what changed, decisions made, files touched and why, newly discovered patterns, risks, and next steps. Do not wait for the user to ask.
+- Move stable reusable learnings into `.bainary/patterns.md`, `.bainary/conventions.md`, `.bainary/architecture.md`, or `.bainary/project-knowledge.md` so the next chat continues with context.
+- Briefly mention in the final response that project handoff/knowledge was updated.
+- Do not record temporary noise, fixed failed attempts, raw command output, unrelated chat, secrets, tokens, or `.env` values.
 
 ## Code Generation Rules
 
