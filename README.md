@@ -3,7 +3,7 @@
 > Web Development Base Skill with Project Learning & Multi-CLI Support
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.2.1-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.2.2-blue.svg)](CHANGELOG.md)
 
 ---
 
@@ -219,6 +219,17 @@ aider         # Aider
 | `bainary-skill status` | แสดงสถานะ knowledge files และ CLI files |
 | `bainary-skill install` | ติดตั้งใหม่ (project-local) |
 | `bainary-skill install --global` | ติดตั้งใหม่แบบ global |
+
+ถ้า project มีไฟล์ `CLAUDE.md`, `AGENTS.md`, `.cursorrules`, `CURSOR.md` หรือ
+`CONVENTIONS.md` อยู่แล้ว `learn`/`update` จะไม่เขียนทับโดยอัตโนมัติ ให้ใช้
+`--force` เฉพาะเมื่อต้องการแทนที่ instruction file เหล่านั้นโดยตั้งใจ:
+
+```bash
+bainary-skill update --force
+```
+
+แต่ละ project จะมี `.bainary/skill-version` เพื่อบอกเวอร์ชันของ skill ที่ใช้ล่าสุด
+โดยคำสั่ง `update` จะอัปเดตไฟล์นี้ แต่จะไม่เขียนทับ knowledge files เดิม
 
 ---
 

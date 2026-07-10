@@ -6,9 +6,9 @@
 #   Global:        curl -sL https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.sh | bash
 #   Project-local: curl -sL https://raw.githubusercontent.com/BainaryTD/bainary-skill/main/install.sh | bash -s -- --local
 
-set -e
+set -euo pipefail
 
-SKILL_REPO="https://raw.githubusercontent.com/BainaryTD/bainary-skill/main"
+SKILL_REPO="${BAINARY_RAW_REPO:-https://raw.githubusercontent.com/BainaryTD/bainary-skill/main}"
 SCRIPT_NAME="bainary-skill"
 SCRIPT_URL="$SKILL_REPO/scripts/bainary-skill"
 
@@ -21,6 +21,12 @@ NC="\033[0m"
 info()    { echo -e "${BLUE}[install]${NC} $1"; }
 success() { echo -e "${GREEN}[install]${NC} $1"; }
 error()   { echo -e "${RED}[install]${NC} $1" >&2; exit 1; }
+
+fetch() {
+  local url="$1" dest="$2"
+  curl --fail --show-error --location --silent "$url" -o "$dest" \
+    || error "Failed to download $url"
+}
 
 LOCAL=false
 
@@ -38,7 +44,7 @@ if [ "$LOCAL" = true ]; then
 
   info "Installing $SCRIPT_NAME locally to $TARGET ..."
   mkdir -p "$TARGET_DIR"
-  curl -sL "$SCRIPT_URL" -o "$TARGET"
+  fetch "$SCRIPT_URL" "$TARGET"
   chmod +x "$TARGET"
 
   # Add ./bin to .gitignore if not already there
@@ -88,7 +94,7 @@ else
   fi
 
   info "Installing $SCRIPT_NAME globally to $TARGET ..."
-  curl -sL "$SCRIPT_URL" -o "$TARGET"
+  fetch "$SCRIPT_URL" "$TARGET"
   chmod +x "$TARGET"
 
   success "Installed globally! Usage:"

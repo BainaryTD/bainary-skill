@@ -1,7 +1,7 @@
 ---
 name: bainary-skill
 description: Web development base skill with project learning, continuous knowledge update, and multi-CLI support (Codex, Grok, Claude Code, Cursor, Aider).
-version: 0.2.1
+version: 0.2.2
 author: Bainary
 license: MIT
 metadata:
@@ -135,6 +135,10 @@ bainary-skill status          # Check what's installed
 bainary-skill update          # Refresh CLI files from latest skill
 ```
 
+`learn` และ `update` จะไม่เขียนทับ CLI instruction files ที่มีอยู่แล้ว หากต้องการ
+แทนที่โดยตั้งใจ ให้ใช้ `--force` ส่วน `.bainary/` knowledge files จะไม่ถูกเขียนทับ
+และมี `.bainary/skill-version` สำหรับติดตามเวอร์ชันที่ใช้งาน
+
 ### 4. Working with Different CLIs
 
 After running `bainary-skill learn`, your project will contain:
@@ -146,6 +150,7 @@ After running `bainary-skill learn`, your project will contain:
 ## Common Pitfalls
 
 - Running without `bainary-skill learn` first → no `.bainary/` context
+- Using `--force` without reviewing existing CLI instructions → custom project rules may be replaced
 - Starting a new chat without reading `session-handoff.md` → lost continuity
 - Leaving `patterns.md` / `conventions.md` as generic templates → AI won't match project style
 - Not updating `.bainary/` after major refactors → stale AI context

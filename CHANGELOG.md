@@ -2,6 +2,19 @@
 
 All notable changes to `bainary-skill` are documented here.
 
+## [0.2.2] — 2026-07
+
+### Fixed
+- Made the Bash CLI and installers fail clearly on download errors.
+- Added portable timestamp handling for GNU/Linux and macOS.
+- Preserved existing CLI instruction files unless `--force` is supplied.
+- Added `.bainary/skill-version` tracking without overwriting project knowledge.
+- Restored executable permissions for Unix scripts.
+
+### Improved
+- Added a local raw-repository override for reliable smoke testing.
+- Added clearer CLI help and safer output formatting.
+
 ## [0.2.1] — 2026-06
 
 ### Added
