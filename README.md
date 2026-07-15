@@ -5,7 +5,45 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-0.3.0-blue.svg)](CHANGELOG.md)
 
+> **AI ไม่ควรเริ่มโปรเจกต์ใหม่ทุกครั้งที่เปิดแชท**
+>
+> `bainary-skill` เปลี่ยน AI จากผู้ช่วยที่จำอะไรไม่ได้ ให้กลายเป็น teammate ที่รู้ว่าโปรเจกต์นี้ใช้ pattern อะไร, architecture อยู่ตรงไหน และครั้งที่แล้วค้างอะไรไว้ — ก่อนจะเขียนโค้ดแม้แต่บรรทัดเดียว
+>
+> **เรียนรู้ก่อนเขียน · จำ context ข้ามแชท · แก้เท่าที่จำเป็น · ไม่สร้างหนี้ให้ทีม**
+
 ---
+
+## ทำไมต้อง Bainary?
+
+เพราะการบอก AI แค่ว่า “ช่วยเขียนเว็บให้หน่อย” แล้วหวังว่ามันจะเข้าใจทั้งระบบ
+ไม่ใช่ software architecture — มันคือการโยนเหรียญ
+
+`bainary-skill` บังคับ workflow ที่ควรเป็นเรื่องปกติให้เกิดขึ้นจริง:
+
+| ปัญหาที่เจอบ่อย | Bainary จัดการให้ |
+|---|---|
+| AI เปิดแชทใหม่แล้วลืมทุกอย่าง | `.bainary/session-handoff.md` เชื่อมงานข้าม session |
+| AI เขียนไม่เข้ากับ codebase | อ่าน patterns, conventions และ source code ก่อน |
+| แก้ bug แล้วสร้าง bug ใหม่ข้าง ๆ | Think Before Coding + Surgical Changes |
+| โปรเจกต์เล็กแต่ได้ abstraction 17 ชั้น | เปิด `minimal` mode เมื่ออยากให้ AI ใจเย็นลง |
+| เปลี่ยน AI CLI แล้วต้องเริ่ม setup ใหม่ | ใช้ knowledge ชุดเดียวกับ Claude, Codex, Cursor, Grok และ Aider |
+
+**นี่ไม่ใช่ prompt ยาว ๆ ที่แปะแล้วลืม** — มันเป็น skill package + CLI + project knowledge system ที่ติดตั้งและอัปเดตได้จริง
+
+---
+
+## จุดเด่นแบบไม่ต้องถ่อมตัว
+
+- 🧠 **AI อ่านโปรเจกต์ก่อนแตะโค้ด** — ไม่เดา architecture จากชื่อโฟลเดอร์
+- 🧬 **Project memory ที่ commit ได้** — ความรู้ไม่ได้หายไปพร้อมกับหน้าต่างแชท
+- 🔁 **Continuity loop อัตโนมัติ** — งานวันนี้กลายเป็น context ของพรุ่งนี้
+- 🧹 **Surgical changes** — ลดไฟล์ที่แตะ ลดโค้ดที่ไม่จำเป็น ลดโอกาสสร้างปัญหาใหม่
+- 🪶 **Minimal-change mode แบบเรียกใช้ได้** — ได้แนวคิด Ponytail โดยไม่บังคับใช้ทุก response
+- 🌍 **Multi-CLI ตั้งแต่ต้น** — ไม่ lock-in กับ agent ตัวเดียว
+- 🛡️ **Minimal ไม่ได้แปลว่าประมาท** — validation, security, accessibility และ error handling ยังอยู่ครบ
+
+---
+
 
 ## What is bainary-skill?
 
