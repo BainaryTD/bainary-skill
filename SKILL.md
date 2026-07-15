@@ -1,7 +1,7 @@
 ---
 name: bainary-skill
 description: Web development base skill with project learning, continuous knowledge update, and multi-CLI support (Codex, Grok, Claude Code, Cursor, Aider).
-version: 0.2.2
+version: 0.3.0
 author: Bainary
 license: MIT
 metadata:
@@ -138,6 +138,21 @@ bainary-skill update          # Refresh CLI files from latest skill
 `learn` และ `update` จะไม่เขียนทับ CLI instruction files ที่มีอยู่แล้ว หากต้องการ
 แทนที่โดยตั้งใจ ให้ใช้ `--force` ส่วน `.bainary/` knowledge files จะไม่ถูกเขียนทับ
 และมี `.bainary/skill-version` สำหรับติดตามเวอร์ชันที่ใช้งาน
+
+### 3.5 Optional Minimal-Change Mode
+
+เปิดใช้เฉพาะเมื่อ task ต้องการลด over-engineering หรือ dependency ที่ไม่จำเป็น:
+
+```bash
+bainary-skill mode minimal   # เปิดใช้กับ project นี้
+bainary-skill mode status     # ตรวจสอบ mode
+bainary-skill mode normal     # ปิดและกลับสู่พฤติกรรมปกติ
+```
+
+โหมดนี้ปิดอยู่โดย default และไม่แทนที่ project learning ระบบจะอ่าน `.bainary/mode`
+และใช้กฎ minimal-change เฉพาะเมื่อมีค่า `minimal` เท่านั้น โดยยังต้องรักษา
+validation, security, accessibility, error handling, data-loss protection และ
+requirements ที่ระบุชัดเจน
 
 ### 4. Working with Different CLIs
 

@@ -18,6 +18,17 @@ This project uses **bainary-skill** principles. Read this file before making any
 5. Read `.bainary/conventions.md` — follow naming, folder, and styling rules
 6. If patterns/conventions are generic or incomplete, inspect existing source code first and update `.bainary/` with the project's real style before coding
 
+## Optional Minimal-Change Mode
+
+This mode is off by default. When `.bainary/mode` contains `minimal`, apply the following only to coding tasks:
+- Question whether the requested code is needed (YAGNI)
+- Reuse existing project code before adding abstractions or dependencies
+- Prefer standard-library and native-platform solutions
+- Fix shared root causes instead of patching individual callers
+- Choose the smallest maintainable diff and leave one runnable check for non-trivial logic
+
+Never remove input validation, security, accessibility, error handling, data-loss protection, or explicit requirements. Return to normal behavior when `.bainary/mode` is absent or does not contain `minimal`.
+
 ## Automatic Project Learning
 
 At the end of every meaningful chat/task, before the final response, learn what changed automatically. Do not wait for the user to ask.

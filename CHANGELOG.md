@@ -2,7 +2,14 @@
 
 All notable changes to `bainary-skill` are documented here.
 
-## [0.2.2] — 2026-07
+## [0.3.0] — 2026-07
+
+### Added
+- Optional project-local `minimal` mode inspired by Ponytail, enabled with `bainary-skill mode minimal`.
+- `mode normal|status` commands for turning the optional mode off or inspecting it.
+- Minimal-change guidance in all CLI adapters while preserving validation, security, accessibility, error handling, and explicit requirements.
+- Smoke-test coverage for enabling, inspecting, and disabling the mode.
+
 
 ### Fixed
 - Made the Bash CLI and installers fail clearly on download errors.

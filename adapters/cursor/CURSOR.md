@@ -34,6 +34,12 @@ After opening this project in Cursor:
 
 At the end of every meaningful task, update `.bainary/session-handoff.md` with what changed, decisions made, files touched and why, newly discovered project patterns, risks, and next steps. Move stable reusable knowledge into `.bainary/patterns.md`, `.bainary/conventions.md`, `.bainary/architecture.md`, or `.bainary/project-knowledge.md`. Do not record temporary noise, raw command output, fixed failed attempts, unrelated chat, secrets, tokens, or `.env` values.
 
+## Optional Minimal-Change Mode
+
+This mode is off by default. When `.bainary/mode` contains `minimal`, apply stricter YAGNI and minimal-diff guidance only to coding tasks. Reuse existing code, prefer standard-library/native solutions, avoid unnecessary abstractions and dependencies, fix shared root causes, and leave one runnable check for non-trivial logic.
+
+Never remove validation, security, accessibility, error handling, data-loss protection, or explicit requirements. Return to normal behavior when `.bainary/mode` is absent or does not contain `minimal`.
+
 ## Principles
 
 1. **Think Before Coding** — Plan first

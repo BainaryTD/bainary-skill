@@ -21,6 +21,17 @@ Always load project context before generating code:
 .bainary/conventions.md         ← naming & structure rules
 ```
 
+## Optional Minimal-Change Mode
+
+This mode is off by default. When `.bainary/mode` contains `minimal`, apply the following only to coding tasks:
+- Question whether the requested code is needed (YAGNI)
+- Reuse existing project code before adding abstractions or dependencies
+- Prefer standard-library and native-platform solutions
+- Fix shared root causes instead of patching individual callers
+- Choose the smallest maintainable diff and leave one runnable check for non-trivial logic
+
+Never remove input validation, security, accessibility, error handling, data-loss protection, or explicit requirements. Return to normal behavior when `.bainary/mode` is absent or does not contain `minimal`.
+
 ## Automatic Project Learning
 
 - At the start of a new chat, read all `.bainary/` files before coding.

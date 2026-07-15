@@ -3,7 +3,7 @@
 > Web Development Base Skill with Project Learning & Multi-CLI Support
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.2.2-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.3.0-blue.svg)](CHANGELOG.md)
 
 ---
 
@@ -217,6 +217,9 @@ aider         # Aider
 | `bainary-skill learn` | สร้าง `.bainary/` + `session-handoff.md` + ติดตั้ง CLI instruction files |
 | `bainary-skill update` | Refresh CLI files จาก latest skill version |
 | `bainary-skill status` | แสดงสถานะ knowledge files และ CLI files |
+| `bainary-skill mode minimal` | เปิด optional minimal-change/Ponytail mode สำหรับ project นี้ |
+| `bainary-skill mode normal` | ปิด mode เสริมและกลับสู่การทำงานปกติ |
+| `bainary-skill mode status` | แสดง mode ปัจจุบัน |
 | `bainary-skill install` | ติดตั้งใหม่ (project-local) |
 | `bainary-skill install --global` | ติดตั้งใหม่แบบ global |
 
@@ -230,6 +233,20 @@ bainary-skill update --force
 
 แต่ละ project จะมี `.bainary/skill-version` เพื่อบอกเวอร์ชันของ skill ที่ใช้ล่าสุด
 โดยคำสั่ง `update` จะอัปเดตไฟล์นี้ แต่จะไม่เขียนทับ knowledge files เดิม
+
+### Optional minimal-change mode
+
+โหมดนี้เป็นแนวคิดจาก Ponytail สำหรับงานที่ต้องการลด over-engineering, dependency,
+boilerplate และการแก้โค้ดเกินขอบเขต โดย **ไม่ได้เปิดใช้อัตโนมัติ**:
+
+```bash
+bainary-skill mode minimal
+# ทำงาน coding ที่ต้องการความ minimal
+bainary-skill mode normal
+```
+
+โหมดนี้ยังห้ามลดทอน validation, security, accessibility, error handling,
+การป้องกัน data loss หรือ requirement ที่ระบุชัดเจน
 
 ---
 

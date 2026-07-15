@@ -25,6 +25,17 @@ If .bainary/patterns.md or .bainary/conventions.md is still generic, inspect the
 - Prefer editing existing files over creating new ones
 - Write self-documenting code; avoid obvious comments
 
+## Optional Minimal-Change Mode
+
+This mode is off by default. When `.bainary/mode` contains `minimal`, apply the following only to coding tasks:
+- Question whether the requested code is needed (YAGNI)
+- Reuse existing project code before adding abstractions or dependencies
+- Prefer standard-library and native-platform solutions
+- Fix shared root causes instead of patching individual callers
+- Choose the smallest maintainable diff and leave one runnable check for non-trivial logic
+
+Never remove input validation, security, accessibility, error handling, data-loss protection, or explicit requirements. Return to normal behavior when `.bainary/mode` is absent or does not contain `minimal`.
+
 ## Automatic Project Learning
 - Before the final response for every meaningful task, automatically update .bainary/session-handoff.md with what changed, decisions made, files touched and why, newly discovered project patterns, risks, and next steps
 - Move stable reusable learnings into .bainary/patterns.md, .bainary/conventions.md, .bainary/architecture.md, or .bainary/project-knowledge.md

@@ -39,7 +39,7 @@ mkdir -p "$PROJECT"
   cd "$PROJECT"
   BAINARY_RAW_REPO="$RAW" "$CLI" learn >/dev/null
   test -f .bainary/skill-version
-  test "$(tr -d '\r\n' < .bainary/skill-version)" = "0.2.2"
+  test "$(tr -d '\r\n' < .bainary/skill-version)" = "0.3.0"
   test -f CLAUDE.md
   printf 'custom project instructions\n' > CLAUDE.md
   BAINARY_RAW_REPO="$RAW" "$CLI" update >/dev/null
@@ -47,6 +47,12 @@ mkdir -p "$PROJECT"
   BAINARY_RAW_REPO="$RAW" "$CLI" update --force >/dev/null
   grep -F 'Claude Code Instructions' CLAUDE.md >/dev/null
   BAINARY_RAW_REPO="$RAW" "$CLI" status >/dev/null
+  "$CLI" mode minimal >/dev/null
+  test "$(tr -d '\r\n' < .bainary/mode)" = "minimal"
+  "$CLI" mode status | grep -Fx 'Current mode: minimal' >/dev/null
+  "$CLI" mode normal >/dev/null
+  test ! -e .bainary/mode
+  "$CLI" mode status | grep -Fx 'Current mode: normal (default)' >/dev/null
 )
 
 FAIL_PROJECT="$TMP_DIR/fail-project"

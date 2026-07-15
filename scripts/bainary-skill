@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-VERSION="0.2.2"
+VERSION="0.3.0"
 BAINARY_DIR=".bainary"
 SKILL_REPO="https://github.com/BainaryTD/bainary-skill"
 RAW_REPO="${BAINARY_RAW_REPO:-https://raw.githubusercontent.com/BainaryTD/bainary-skill/main}"
@@ -161,6 +161,41 @@ cmd_status() {
       printf '  %b\n' "${YELLOW}–${NC} $file  (not installed)"
     fi
   done
+
+  echo ""
+  printf '%b\n' "${BOLD}Optional coding mode:${NC}"
+  if [ -f "$BAINARY_DIR/mode" ]; then
+    printf '  %b\n' "${GREEN}✓${NC} $(tr -d '\r\n' < "$BAINARY_DIR/mode")"
+  else
+    printf '  %b\n' "${GREEN}✓${NC} normal (default)"
+  fi
+}
+
+cmd_mode() {
+  local mode="${1:-status}"
+  [ -d "$BAINARY_DIR" ] || error "No .bainary/ directory found. Run '$(basename "$0") learn' first."
+
+  case "$mode" in
+    minimal|ponytail)
+      printf '%s\n' "minimal" > "$BAINARY_DIR/mode"
+      success "Minimal-change mode enabled for this project."
+      echo "AI assistants should read .bainary/mode and apply the optional minimal-change rules."
+      ;;
+    normal|off)
+      rm -f "$BAINARY_DIR/mode"
+      success "Normal mode enabled for this project."
+      ;;
+    status)
+      if [ -f "$BAINARY_DIR/mode" ]; then
+        printf 'Current mode: %s\n' "$(tr -d '\r\n' < "$BAINARY_DIR/mode")"
+      else
+        echo "Current mode: normal (default)"
+      fi
+      ;;
+    *)
+      error "Unknown mode: $mode. Use minimal, normal, or status."
+      ;;
+  esac
 }
 
 cmd_install() {
@@ -185,6 +220,7 @@ cmd_help() {
   echo "  learn [--force]      Initialize .bainary/ knowledge + install CLI instruction files"
   echo "  update [--force]     Refresh CLI files from latest skill version"
   echo "  status               Show knowledge state and installed files"
+  echo "  mode [minimal|normal|status]  Enable optional minimal-change mode"
   echo "  install [--global]   Re-install this CLI (default: project-local)"
   echo "  help                 Show this help"
   echo ""
@@ -201,6 +237,7 @@ case "${1:-help}" in
     "cmd_$1" "$force"
     ;;
   status)  cmd_status ;;
+  mode)    cmd_mode "${2:-status}" ;;
   install) cmd_install "${2:-local}" ;;
   help|--help|-h) cmd_help ;;
   *) error "Unknown command: $1. Run '$(basename "$0") help' for usage." ;;

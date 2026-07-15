@@ -138,6 +138,41 @@ function cmd_status {
             Write-Host "  [-] $file  (not installed)" -ForegroundColor Yellow
         }
     }
+    Write-Host ""
+    Write-Host "Optional coding mode:" -ForegroundColor White
+    if (Test-Path "$BAINARY_DIR\mode") {
+        $currentMode = (Get-Content "$BAINARY_DIR\mode" -Raw).Trim()
+        Write-Host "  [OK] $currentMode" -ForegroundColor Green
+    } else {
+        Write-Host "  [OK] normal (default)" -ForegroundColor Green
+    }
+}
+
+function cmd_mode {
+    param([string]$SelectedMode = "status")
+    if (-not (Test-Path $BAINARY_DIR)) {
+        Write-Err "No .bainary\ directory found. Run 'bainary-skill learn' first."
+    }
+
+    switch ($SelectedMode.ToLower()) {
+        { $_ -in "minimal", "ponytail" } {
+            "minimal" | Set-Content "$BAINARY_DIR\mode"
+            Write-Success "Minimal-change mode enabled for this project."
+            Write-Host "AI assistants should read .bainary\mode and apply the optional minimal-change rules."
+        }
+        { $_ -in "normal", "off" } {
+            Remove-Item "$BAINARY_DIR\mode" -ErrorAction SilentlyContinue
+            Write-Success "Normal mode enabled for this project."
+        }
+        "status" {
+            if (Test-Path "$BAINARY_DIR\mode") {
+                Write-Host "Current mode: $((Get-Content "$BAINARY_DIR\mode" -Raw).Trim())"
+            } else {
+                Write-Host "Current mode: normal (default)"
+            }
+        }
+        default { Write-Err "Unknown mode: $SelectedMode. Use minimal, normal, or status." }
+    }
 }
 
 function cmd_install {
@@ -152,7 +187,7 @@ function cmd_install {
 }
 
 function cmd_help {
-    Write-Host "bainary-skill — Web Development Base Skill v0.2.1" -ForegroundColor White
+    Write-Host "bainary-skill — Web Development Base Skill v0.3.0" -ForegroundColor White
     Write-Host ""
     Write-Host "Usage: bainary-skill <command> [options]"
     Write-Host ""
@@ -160,6 +195,7 @@ function cmd_help {
     Write-Host "  learn              Initialize .bainary\ knowledge + install CLI instruction files"
     Write-Host "  update             Refresh CLI files from latest skill version"
     Write-Host "  status             Show knowledge state and installed files"
+    Write-Host "  mode [minimal|normal|status]  Enable optional minimal-change mode"
     Write-Host "  install [global]   Re-install this CLI (default: project-local)"
     Write-Host "  help               Show this help"
     Write-Host ""
@@ -180,6 +216,7 @@ switch ($Command.ToLower()) {
     "learn"               { cmd_learn }
     "update"              { cmd_update }
     "status"              { cmd_status }
+    "mode"                { cmd_mode $(if ($Mode -eq "local") { "status" } else { $Mode }) }
     "install"             { cmd_install }
     { $_ -in "help","--help","-h" } { cmd_help }
     default               { Write-Err "Unknown command: $Command. Run 'bainary-skill help' for usage." }
