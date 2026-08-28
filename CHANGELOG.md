@@ -2,6 +2,12 @@
 
 All notable changes to `bainary-skill` are documented here.
 
+## [0.4.0] — 2026-08
+
+### Added
+- Vendored the `define-goal` skill for turning fuzzy intentions into concrete, measurable objectives with explicit verification criteria.
+- Included the `skills/` directory in npm package contents.
+
 ## [0.3.0] — 2026-07
 
 ### Added

@@ -261,6 +261,13 @@ aider         # Aider
 | `bainary-skill install` | ติดตั้งใหม่ (project-local) |
 | `bainary-skill install --global` | ติดตั้งใหม่แบบ global |
 
+### Included optional skills
+
+This repository includes `skills/define-goal/SKILL.md`, adapted from the official
+OpenAI `define-goal` skill. Use it when a task needs a concrete, measurable goal
+with explicit success criteria; ordinary implementation tasks do not need to
+invoke it automatically.
+
 ถ้า project มีไฟล์ `CLAUDE.md`, `AGENTS.md`, `.cursorrules`, `CURSOR.md` หรือ
 `CONVENTIONS.md` อยู่แล้ว `learn`/`update` จะไม่เขียนทับโดยอัตโนมัติ ให้ใช้
 `--force` เฉพาะเมื่อต้องการแทนที่ instruction file เหล่านั้นโดยตั้งใจ:
@@ -349,6 +356,9 @@ bainary-skill/
 ├── scripts/
 │   ├── bainary-skill               # CLI script (bash)
 │   └── bainary-skill.ps1           # CLI script (PowerShell / Windows)
+│
+├── skills/                         # Optional reusable skills
+│   └── define-goal/SKILL.md        # Goal definition and refinement workflow
 │
 ├── adapters/                       # Per-CLI instruction files
 │   ├── claude/CLAUDE.md

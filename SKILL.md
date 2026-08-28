@@ -1,13 +1,13 @@
 ---
 name: bainary-skill
 description: Web development base skill with project learning, continuous knowledge update, and multi-CLI support (Codex, Grok, Claude Code, Cursor, Aider).
-version: 0.3.0
+version: 0.4.0
 author: Bainary
 license: MIT
 metadata:
   hermes:
     tags: [web, base-skill, project-learning, multi-cli, adaptive]
-    related_skills: [hermes-agent-skill-authoring]
+    related_skills: [define-goal, hermes-agent-skill-authoring]
 ---
 
 # bainary-skill
@@ -59,6 +59,14 @@ Web Development Base Skill with Project Learning & Multi-CLI Support
 ```
 
 Templates for these files are in `templates/.bainary/`.
+
+### Optional `define-goal` skill
+
+The repository also ships `skills/define-goal/SKILL.md` for tasks that need goal
+clarification before execution. It turns fuzzy intentions into concrete,
+measurable objectives with explicit verification evidence and bounded scope.
+Use it only when goal definition is requested or genuinely needed; do not force
+it onto ordinary implementation work.
 
 ### Continuity Loop
 
