@@ -370,7 +370,12 @@ bainary-skill/
 │   └── bainary-skill.ps1           # CLI script (PowerShell / Windows)
 │
 ├── skills/                         # Optional reusable skills
-│   └── define-goal/SKILL.md        # Goal definition and refinement workflow
+│   ├── define-goal/SKILL.md        # Goal definition and refinement workflow
+│   └── pstack/                     # Vendored optional pstack skill suite
+│       ├── README.md               # Integration and usage notes
+│       ├── poteto-mode/SKILL.md    # Main pstack entry point
+│       ├── principle-*/             # Engineering principles
+│       └── poteto-mode/playbooks/   # Task-specific rigorous workflows
 │
 ├── adapters/                       # Per-CLI instruction files
 │   ├── claude/CLAUDE.md
