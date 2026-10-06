@@ -1,6 +1,6 @@
 {
   "name": "bainary-skill",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Web development base skill with project learning and multi-CLI support",
   "author": "Bainary",
   "license": "MIT",
@@ -8,7 +8,7 @@
     "type": "git",
     "url": "https://github.com/BainaryTD/bainary-skill.git"
   },
-  "keywords": ["web", "ai", "skill", "claude", "cursor", "codex", "aider", "grok"],
+  "keywords": ["web", "ai", "skill", "claude", "cursor", "codex", "aider", "grok", "pstack"],
   "bin": {
     "bainary-skill": "./scripts/bainary-skill"
   },

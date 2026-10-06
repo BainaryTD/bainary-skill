@@ -2,6 +2,13 @@
 
 All notable changes to `bainary-skill` are documented here.
 
+## [0.5.0] — 2026-10
+
+### Added
+- Vendored the standalone `pstack` Agent Skills under `skills/pstack/` with upstream license and provenance.
+- Added optional project-local `pstack` mode via `bainary-skill mode pstack`.
+- Added smoke-test coverage for enabling, inspecting, and disabling pstack mode.
+
 ## [0.4.0] — 2026-08
 
 ### Added

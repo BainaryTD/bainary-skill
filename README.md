@@ -3,7 +3,7 @@
 > Web Development Base Skill with Project Learning & Multi-CLI Support
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.3.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.5.0-blue.svg)](CHANGELOG.md)
 
 > **AI ไม่ควรเริ่มโปรเจกต์ใหม่ทุกครั้งที่เปิดแชท**
 >
@@ -260,6 +260,18 @@ aider         # Aider
 | `bainary-skill mode status` | แสดง mode ปัจจุบัน |
 | `bainary-skill install` | ติดตั้งใหม่ (project-local) |
 | `bainary-skill install --global` | ติดตั้งใหม่แบบ global |
+
+### Optional pstack mode
+
+For rigorous non-trivial work, enable the vendored pstack playbooks per project:
+
+```bash
+bainary-skill mode pstack
+# use skills/pstack/poteto-mode/SKILL.md as the entry point
+bainary-skill mode normal
+```
+
+It is off by default and does not replace Bainary's project-learning or safety rules.
 
 ### Included optional skills
 

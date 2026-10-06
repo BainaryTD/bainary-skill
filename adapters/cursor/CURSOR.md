@@ -46,3 +46,7 @@ Never remove validation, security, accessibility, error handling, data-loss prot
 2. **Simplicity First** — Simple > Clever
 3. **Surgical Changes** — Minimum footprint
 4. **Goal-Driven Execution** — Clear verifiable goal
+
+## Optional pstack Mode
+
+This mode is off by default. When `.bainary/mode` contains `pstack`, use `skills/pstack/poteto-mode/SKILL.md` as the entry point for rigorous non-trivial work. It routes to pstack playbooks and principles as needed; do not apply it to every response or force it onto simple tasks. Keep Bainary's project-learning and safety rules active.

@@ -60,3 +60,7 @@ Move stable reusable knowledge into `.bainary/patterns.md`, `.bainary/convention
 - Do not rewrite working code outside the task scope
 - Do not introduce new dependencies without mentioning it
 - Do not change folder structure without updating `.bainary/architecture.md`
+
+## Optional pstack Mode
+
+This mode is off by default. When `.bainary/mode` contains `pstack`, use `skills/pstack/poteto-mode/SKILL.md` as the entry point for rigorous non-trivial work. It routes to pstack playbooks and principles as needed; do not apply it to every response or force it onto simple tasks. Keep Bainary's project-learning and safety rules active.

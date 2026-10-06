@@ -39,7 +39,7 @@ mkdir -p "$PROJECT"
   cd "$PROJECT"
   BAINARY_RAW_REPO="$RAW" "$CLI" learn >/dev/null
   test -f .bainary/skill-version
-  test "$(tr -d '\r\n' < .bainary/skill-version)" = "0.3.0"
+  test "$(tr -d '\r\n' < .bainary/skill-version)" = "0.5.0"
   test -f CLAUDE.md
   printf 'custom project instructions\n' > CLAUDE.md
   BAINARY_RAW_REPO="$RAW" "$CLI" update >/dev/null
@@ -50,6 +50,10 @@ mkdir -p "$PROJECT"
   "$CLI" mode minimal >/dev/null
   test "$(tr -d '\r\n' < .bainary/mode)" = "minimal"
   "$CLI" mode status | grep -Fx 'Current mode: minimal' >/dev/null
+  "$CLI" mode pstack >/dev/null
+  test "$(tr -d '\r\n' < .bainary/mode)" = "pstack"
+  "$CLI" mode status | grep -Fx 'Current mode: pstack' >/dev/null
+  test -f "$ROOT_DIR/skills/pstack/poteto-mode/SKILL.md"
   "$CLI" mode normal >/dev/null
   test ! -e .bainary/mode
   "$CLI" mode status | grep -Fx 'Current mode: normal (default)' >/dev/null
